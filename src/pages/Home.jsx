@@ -7,7 +7,9 @@ const Home = () => {
         <>
             <Header />
             <main>
-                Home
+                <h1 class="text-3xl font-bold underline">
+                    Hola!
+                </h1>
             </main>
             <Footer />
         </>

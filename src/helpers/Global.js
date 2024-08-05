@@ -5,5 +5,8 @@ export const Global = {
   actionType: {
     SET_CLIENTS: "SET_CLIENTS",
     SET_LOADING: "SET_LOADING",
+  },
+  images: {
+    logo: "Logo MiAlarma.png"
   }
 };
