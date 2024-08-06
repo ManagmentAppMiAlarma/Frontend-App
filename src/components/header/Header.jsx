@@ -202,7 +202,7 @@ const Header = ({ role }) => {
                             </div>
                             <div className="py-6">
                                 <NavLink
-                                    to="/dashboard/logout"
+                                    to="/inicio/logout"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
                                 >
                                     Cerrar Sesion

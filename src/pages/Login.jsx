@@ -1,11 +1,12 @@
 import React from 'react'
-import { Footer } from '../components'
 import { useAuth, useForm } from '../hooks';
 import { Global } from '../helpers/Global';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const { setAuth } = useAuth();
     const { form, changed } = useForm();
+    const navigate = useNavigate();
 
     const loginUser = async (e) => {
         e.preventDefault();
@@ -41,6 +42,10 @@ const Login = () => {
             );
 
             setAuth(data.user);
+            setTimeout(() => {
+                navigate("/inicio");
+            }, 400)
+
         } catch (e) {
             throw new Error("Ha ocurrido un error!");
         }
