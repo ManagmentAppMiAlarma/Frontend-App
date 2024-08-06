@@ -21,31 +21,31 @@ import {
     XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { NavLink } from 'react-router-dom'
 
-const products = [
-    { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-    { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-    { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-    { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-    { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
-]
-const callsToAction = [
-    { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-    { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
+// const products = [
+//     { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
+//     { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
+//     { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
+//     { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
+//     { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
+// ]
+// const callsToAction = [
+//     { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
+//     { name: 'Contact sales', href: '#', icon: PhoneIcon },
+// ]
 
 
-const Header = () => {
+const Header = ({ role }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
     return (
         <header className="bg-slate-200">
             <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2 lg:px-8">
                 <div className="flex lg:flex-1">
-                    <a href="/" className="-m-1.5 p-1.5">
+                    <NavLink to="/inicio" className="-m-1.5 p-1.5">
                         <span className="sr-only">Your Company</span>
                         <img alt="" src={Global.images.logo} className="h-16 rounded-3xl w-auto" />
-                    </a>
+                    </NavLink>
                 </div>
                 <div className="flex lg:hidden">
                     <button
@@ -58,7 +58,7 @@ const Header = () => {
                     </button>
                 </div>
                 <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-                    <Popover className="relative">
+                    {/* <Popover className="relative">
                         <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                             Product
                             <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
@@ -78,10 +78,10 @@ const Header = () => {
                                             <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
                                         </div>
                                         <div className="flex-auto">
-                                            <a href={item.href} className="block font-semibold text-gray-900">
+                                            <NavLink to={item.href} className="block font-semibold text-gray-900">
                                                 {item.name}
                                                 <span className="absolute inset-0" />
-                                            </a>
+                                            </NavLink>
                                             <p className="mt-1 text-gray-600">{item.description}</p>
                                         </div>
                                     </div>
@@ -89,43 +89,56 @@ const Header = () => {
                             </div>
                             <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-red-400">
                                 {callsToAction.map((item) => (
-                                    <a
+                                    <NavLink
                                         key={item.name}
-                                        href={item.href}
+                                        to={item.href}
                                         className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                                     >
                                         <item.icon aria-hidden="true" className="h-5 w-5 flex-none text-gray-400" />
                                         {item.name}
-                                    </a>
+                                    </NavLink>
                                 ))}
                             </div>
                         </PopoverPanel>
-                    </Popover>
+                    </Popover> */}
 
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Features
-                    </a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Marketplace
-                    </a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Company
-                    </a>
+                    {
+                        role == "owner" || role == "admin" ? (
+                            <>
+                                <NavLink to="/inicio/clientes" className="text-sm font-semibold leading-6 text-gray-900">
+                                    Clientes
+                                </NavLink>
+                                <NavLink to="/inicio/ordenes" className="text-sm font-semibold leading-6 text-gray-900">
+                                    Ordenes de Servicio
+                                </NavLink>
+                                <NavLink to="/inicio/empleados" className="text-sm font-semibold leading-6 text-gray-900">
+                                    Empleados
+                                </NavLink>
+                            </>
+                        ) : (
+                            <NavLink to="/inicio/ordenes" className="text-sm font-semibold leading-6 text-gray-900">
+                                Ordenes de Servicio
+                            </NavLink>
+                        )
+                    }
+                    <NavLink to="/" className="text-sm font-semibold leading-6 text-gray-900">
+                        Configuracion
+                    </NavLink>
                 </PopoverGroup>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Log in <span aria-hidden="true">&rarr;</span>
-                    </a>
+                    <NavLink to={`/inicio/logout`} className="text-sm font-semibold leading-6 text-gray-900">
+                        Cerrar Sesion <span aria-hidden="true">&rarr;</span>
+                    </NavLink>
                 </div>
             </nav>
             <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
                 <div className="fixed inset-0 z-10" />
                 <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-slate-200 px-5 py-2 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5">
+                        <NavLink to="/inicio" className="-m-1.5 p-1.5">
                             <span className="sr-only">Your Company</span>
                             <img alt="" src={Global.images.logo} className="h-16 rounded-3xl w-auto" />
-                        </a>
+                        </NavLink>
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(false)}
@@ -138,7 +151,7 @@ const Header = () => {
                     <div className="mt-6 flow-root">
                         <div className="-my-6 divide-y divide-gray-600">
                             <div className="space-y-2 py-6">
-                                <Disclosure as="div" className="-mx-3">
+                                {/* <Disclosure as="div" className="-mx-3">
                                     <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400">
                                         Product
                                         <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
@@ -155,33 +168,45 @@ const Header = () => {
                                             </DisclosureButton>
                                         ))}
                                     </DisclosurePanel>
-                                </Disclosure>
-                                <a
-                                    href="#"
+                                </Disclosure> */}
+                                {role == "owner" || role == "admin" ? (
+                                    <>
+                                        <NavLink to="/inicio/clientes"
+                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
+                                        >
+                                            Clientes
+                                        </NavLink>
+                                        <NavLink to="/inicio/ordenes"
+                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
+                                        >
+                                            Ordenes de Servicio
+                                        </NavLink>
+                                        <NavLink to="/inicio/empleados"
+                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
+                                        >
+                                            Empleados
+                                        </NavLink>
+                                    </>
+                                ) : (
+                                    <NavLink to="/inicio/ordenes"
+                                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
+                                    >
+                                        Ordenes de Servicio
+                                    </NavLink>
+                                )}
+                                <NavLink to="/"
                                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
                                 >
-                                    Features
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                                >
-                                    Marketplace
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                                >
-                                    Company
-                                </a>
+                                    Configuracion
+                                </NavLink>
                             </div>
                             <div className="py-6">
-                                <a
-                                    href="#"
+                                <NavLink
+                                    to="/dashboard/logout"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
                                 >
-                                    Log in
-                                </a>
+                                    Cerrar Sesion
+                                </NavLink>
                             </div>
                         </div>
                     </div>

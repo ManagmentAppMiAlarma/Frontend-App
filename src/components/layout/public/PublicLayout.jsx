@@ -7,7 +7,7 @@ const PublicLayout = () => {
     const { auth } = useAuth();
     return (
         <>
-            <main>{true ? <Outlet /> : <Navigate to="/dashboard" />}</main>
+            <main>{!auth.id ? <Outlet /> : <Navigate to="/dashboard" />}</main>
         </>
     );
 }

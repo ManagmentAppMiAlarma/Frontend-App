@@ -6,8 +6,6 @@ const Dashboard = () => {
     const { auth } = useAuth();
     const { role } = auth;
 
-    console.log(role)
-
     if (role == "admin" || role == "owner") {
         return <Admin />
     } else {

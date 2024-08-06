@@ -13,38 +13,34 @@ const Login = () => {
         let dataUser = form;
 
         try {
-            // const res = await fetch(`${Global.endpoints.backend}auth/login`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(dataUser),
-            // });
+            const res = await fetch(`${Global.endpoints.backend}auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dataUser),
+            });
 
-            // const data = await res.json();
-            // if (res.status !== 201) {
-            //     MsgError(data.message);
-            // }
+            const data = await res.json();
 
-            // localStorage.setItem("token", data.token);
-            // localStorage.setItem(
-            //     "user",
-            //     JSON.stringify(
-            //         (data["user"] = {
-            //             id: data.id,
-            //             name: data.name,
-            //             dni: data.dni,
-            //             email: data.email,
-            //         })
-            //     )
-            // );
+            if (res.status !== 201) {
+                console.log('Ha ocurrido un error!')
+            }
 
-            // console.log(data.user);
-            console.log(dataUser)
-            // setAuth(data.user);
-            // setTimeout(() => {
-            //     window.location.pathname = "/dashboard";
-            // }, 400);
+            localStorage.setItem("token", data.token);
+            localStorage.setItem(
+                "user",
+                JSON.stringify(
+                    (data["user"] = {
+                        id: data.user.id,
+                        name: data.user.name,
+                        email: data.user.email,
+                        role: data.user.role
+                    })
+                )
+            );
+
+            setAuth(data.user);
         } catch (e) {
             throw new Error("Ha ocurrido un error!");
         }
@@ -86,7 +82,6 @@ const Login = () => {
                     />
                 </form>
             </main>
-            <Footer />
         </>
     );
 }

@@ -1,8 +1,11 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { Error404, Login } from '../pages'
+import { Error404, Login, Dashboard } from '../pages'
 import { PrivateLayout, PublicLayout } from '../components'
-import Dashboard from '../pages/Dashboard'
+import { Logout } from '../services/Logout'
+import Orders from '../components/orders/Orders'
+import Clients from '../components/clients/Clients'
+import Employee from '../components/employee/Employee'
 
 const Routing = () => {
   return (
@@ -13,8 +16,12 @@ const Routing = () => {
           <Route path="login" element={<Login />} />
         </Route>
 
-        <Route path="/dashboard" element={<PrivateLayout />}>
+        <Route path="/inicio" element={<PrivateLayout />}>
           <Route index element={<Dashboard />} />
+          <Route path='ordenes' element={<Orders />} />
+          <Route path='clientes' element={<Clients />} />
+          <Route path='empleados' element={<Employee />} />
+          <Route path='logout' element={<Logout />} />
         </Route>
 
         <Route path="*" element={<Error404 />} />

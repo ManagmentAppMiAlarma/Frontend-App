@@ -1,11 +1,10 @@
 import React from 'react'
-import Header from '../../../header/Header'
+import Orders from '../../../orders/Orders'
 
 const Admin = () => {
     return (
         <div>
-            <Header />
-            Admin
+            <Orders />
         </div>
     )
 }
