@@ -1,12 +1,12 @@
-import React from 'react'
-import Orders from '../../../orders/Orders'
+import React from "react";
+import Orders from "../../../orders/Orders";
 
 const Admin = () => {
-    return (
-        <div>
-            <Orders />
-        </div>
-    )
-}
+  return (
+    <main>
+      <Orders />
+    </main>
+  );
+};
 
-export default Admin
+export default Admin;
