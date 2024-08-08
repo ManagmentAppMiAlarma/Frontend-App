@@ -26,6 +26,8 @@ import {
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../hooks";
+import { generateUsername } from "../../helpers/generateUsername";
 
 // const products = [
 //     { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -41,6 +43,9 @@ import { NavLink } from "react-router-dom";
 
 const Header = ({ role }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { auth } = useAuth();
+  const username = generateUsername(auth.name);
+
   return (
     <header className="bg-slate-200">
       <nav
@@ -142,7 +147,7 @@ const Header = ({ role }) => {
             </NavLink>
           )}
           <NavLink
-            to="/"
+            to="perfil"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             Yo
@@ -237,7 +242,7 @@ const Header = ({ role }) => {
                   </NavLink>
                 )}
                 <NavLink
-                  to="/"
+                  to="perfil"
                   onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
                 >
