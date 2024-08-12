@@ -6,6 +6,7 @@ const DetailClient = () => {
   const { clientNumber } = useParams();
   const [loading, setLoading] = useState(true);
   const [client, setClient] = useState({});
+  console.log(client);
 
   useEffect(() => {
     getClientbyId(clientNumber, setLoading, setClient);
@@ -16,7 +17,7 @@ const DetailClient = () => {
   } else {
     return (
       <main>
-        <h1>Detalle del cliente</h1>
+        <h1>{`Detalle del cliente: ${clientNumber}`}</h1>
         <section>datos del cliente</section>
       </main>
     );

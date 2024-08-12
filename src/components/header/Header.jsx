@@ -44,7 +44,43 @@ import { generateUsername } from "../../helpers/generateUsername";
 const Header = ({ role }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { auth } = useAuth();
-  const username = generateUsername(auth.name);
+
+  const nav = {
+    admin: [
+      {
+        id: 1,
+        to: "/inicio/clientes",
+        title: "Clientes",
+      },
+      {
+        id: 2,
+        to: "/inicio/ordenes",
+        title: "Ordenes de Servicio",
+      },
+      {
+        id: 3,
+        to: "/inicio/empleados",
+        title: "Usuarios",
+      },
+      {
+        id: 4,
+        to: "perfil",
+        title: "Yo",
+      },
+    ],
+    user: [
+      {
+        id: 1,
+        to: "/inicio/ordenes",
+        title: "Ordenes de Servicio",
+      },
+      {
+        id: 2,
+        to: "perfil",
+        title: "Yo",
+      },
+    ],
+  };
 
   return (
     <header className="bg-slate-200">
@@ -54,12 +90,8 @@ const Header = ({ role }) => {
       >
         <div className="flex lg:flex-1">
           <NavLink to="/inicio" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img
-              alt=""
-              src={Global.images.logo}
-              className="h-16 rounded-3xl w-auto"
-            />
+            <span className="sr-only">Mi Alarma</span>
+            <img alt="" src={Global.images.logo} className="h-16 rounded-3xl" />
           </NavLink>
         </div>
         <div className="flex lg:hidden">
@@ -117,41 +149,31 @@ const Header = ({ role }) => {
                         </PopoverPanel>
                     </Popover> */}
 
-          {role == "owner" || role == "admin" ? (
-            <>
-              <NavLink
-                to="/inicio/clientes"
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Clientes
-              </NavLink>
-              <NavLink
-                to="/inicio/ordenes"
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Ordenes de Servicio
-              </NavLink>
-              <NavLink
-                to="/inicio/empleados"
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Usuarios
-              </NavLink>
-            </>
-          ) : (
-            <NavLink
-              to="/inicio/ordenes"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              Ordenes de Servicio
-            </NavLink>
-          )}
-          <NavLink
-            to="perfil"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Yo
-          </NavLink>
+          <>
+            {role == "owner" || role == "admin"
+              ? nav.admin.map(({ id, to, title }) => {
+                  return (
+                    <NavLink
+                      key={id}
+                      to={to}
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      {title}
+                    </NavLink>
+                  );
+                })
+              : nav.user.map(({ id, to, title }) => {
+                  return (
+                    <NavLink
+                      key={id}
+                      to={to}
+                      className="text-sm font-semibold leading-6 text-gray-900"
+                    >
+                      {title}
+                    </NavLink>
+                  );
+                })}
+          </>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <NavLink
@@ -167,15 +189,15 @@ const Header = ({ role }) => {
         onClose={setMobileMenuOpen}
         className="lg:hidden"
       >
-        <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-slate-200 px-5 py-2 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <div className="fixed inset-0 z-9" />
+        <DialogPanel className="fixed inset-y-0 right-0 z-9 w-full overflow-y-auto bg-slate-200 px-5 py-2 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <NavLink to="/inicio" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+              <span className="sr-only">Mi Alarma</span>
               <img
-                alt=""
+                alt="Hola"
                 src={Global.images.logo}
-                className="h-16 rounded-3xl w-auto"
+                className="h-16 rounded-3xl"
               />
             </NavLink>
             <button
@@ -208,46 +230,31 @@ const Header = ({ role }) => {
                                         ))}
                                     </DisclosurePanel>
                                 </Disclosure> */}
-                {role == "owner" || role == "admin" ? (
-                  <>
-                    <NavLink
-                      to="/inicio/clientes"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                    >
-                      Clientes
-                    </NavLink>
-                    <NavLink
-                      to="/inicio/ordenes"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                    >
-                      Ordenes de Servicio
-                    </NavLink>
-                    <NavLink
-                      to="/inicio/empleados"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                    >
-                      Usuarios
-                    </NavLink>
-                  </>
-                ) : (
-                  <NavLink
-                    to="/inicio/ordenes"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                  >
-                    Ordenes de Servicio
-                  </NavLink>
-                )}
-                <NavLink
-                  to="perfil"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
-                >
-                  Yo
-                </NavLink>
+                {role == "owner" || role == "admin"
+                  ? nav.admin.map(({ id, to, title }) => {
+                      return (
+                        <NavLink
+                          key={id}
+                          to={to}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
+                        >
+                          {title}
+                        </NavLink>
+                      );
+                    })
+                  : nav.user.map(({ id, to, title }) => {
+                      return (
+                        <NavLink
+                          key={id}
+                          to={to}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-red-400"
+                        >
+                          {title}
+                        </NavLink>
+                      );
+                    })}
               </div>
               <div className="py-6">
                 <NavLink

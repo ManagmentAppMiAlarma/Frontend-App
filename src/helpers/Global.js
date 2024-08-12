@@ -7,6 +7,6 @@ export const Global = {
     SET_LOADING: "SET_LOADING",
   },
   images: {
-    logo: "Logo MiAlarma.png",
+    logo: "Logo.png",
   },
 };

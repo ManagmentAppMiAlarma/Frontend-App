@@ -91,6 +91,7 @@ const Profile = () => {
                   id="phone"
                   name="phone"
                   type="phone"
+                  placeholder={auth.phone}
                   autoComplete="phone"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                 />
@@ -101,17 +102,8 @@ const Profile = () => {
                 htmlFor="dni"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Cédula de Identidad
+                {`Cédula de Identidad: ${auth.dni}`}
               </label>
-              <div className="mt-1">
-                <input
-                  id="dni"
-                  name="dni"
-                  type="dni"
-                  autoComplete="dni"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
-                />
-              </div>
             </div>
             <div className="sm:col-span-4">
               <label

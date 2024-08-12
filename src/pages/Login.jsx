@@ -34,6 +34,8 @@ const Login = () => {
             id: data.user.id,
             name: data.user.name,
             email: data.user.email,
+            dni: data.user.dni,
+            phone: data.user.phone,
             role: data.user.role,
           })
         )
