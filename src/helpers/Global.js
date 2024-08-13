@@ -1,12 +1,12 @@
 export const Global = {
   endpoints: {
-    backend: "http://52.91.157.108:8080/api/",
+    backend: "http://34.238.44.88:8080/api/",
   },
   actionType: {
     SET_CLIENTS: "SET_CLIENTS",
     SET_LOADING: "SET_LOADING",
   },
   images: {
-    logo: "Logo.png",
+    logo: "icon512_maskable.png",
   },
 };
