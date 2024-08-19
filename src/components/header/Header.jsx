@@ -27,7 +27,6 @@ import {
 } from "@heroicons/react/20/solid";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks";
-import { generateUsername } from "../../helpers/generateUsername";
 
 // const products = [
 //     { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },

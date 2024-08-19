@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import { useGlobalContext } from "../../hooks/useGlobalContext";
 
 const Orders = () => {
-    return (
-        <div>
-            Ordenes de servicio
-        </div>
-    )
-}
+  const { orders, ordersLoading } = useGlobalContext();
 
-export default Orders
+  return (
+    <>
+      <div>header</div>
+      <main>{ordersLoading ? <div>Cargando...</div> : <div></div>}</main>
+    </>
+  );
+};
+
+export default Orders;

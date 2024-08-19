@@ -12,7 +12,7 @@ const Login = () => {
     let dataUser = form;
 
     try {
-      const res = await fetch(`${Global.endpoints.backend}auth/login`, {
+      const res = await fetch(`${Global.endpoints.backend}auth/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,13 +26,16 @@ const Login = () => {
         console.log("Ha ocurrido un error!");
       }
 
+      console.log(data);
+
       localStorage.setItem("token", data.token);
       localStorage.setItem(
         "user",
         JSON.stringify(
           (data["user"] = {
             id: data.user.id,
-            name: data.user.name,
+            firstname: data.user.firstname,
+            lastname: data.user.lastname,
             email: data.user.email,
             dni: data.user.dni,
             phone: data.user.phone,
@@ -42,9 +45,9 @@ const Login = () => {
       );
 
       setAuth(data.user);
-      setTimeout(() => {
-        window.location.reload();
-      }, 400);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 400);
     } catch (e) {
       throw new Error("Ha ocurrido un error!");
     }

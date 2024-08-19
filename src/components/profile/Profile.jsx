@@ -1,11 +1,10 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { useAuth } from "../../hooks";
-import { generateUsername } from "../../helpers/generateUsername";
 
 const Profile = () => {
   const { auth } = useAuth();
-  const { firstname, lastname } = generateUsername(auth.name);
+  const { firstname, lastname, dni, email, role, phone } = auth;
   return (
     <main>
       <form>
@@ -14,7 +13,7 @@ const Profile = () => {
             aria-hidden="true"
             className="h-16 w-16 text-gray-300 mx-auto"
           />
-          <h1>{auth.name}</h1>
+          <h1>{firstname}</h1>
         </div>
 
         <div className="border-b border-gray-900/10 pb-8 mx-4 px-4 pt-3">
@@ -73,7 +72,7 @@ const Profile = () => {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder={auth.email}
+                  placeholder={email}
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                 />
@@ -91,7 +90,7 @@ const Profile = () => {
                   id="phone"
                   name="phone"
                   type="phone"
-                  placeholder={auth.phone}
+                  placeholder={phone}
                   autoComplete="phone"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
                 />
@@ -102,7 +101,7 @@ const Profile = () => {
                 htmlFor="dni"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                {`Cédula de Identidad: ${auth.dni}`}
+                {`Cédula de Identidad: ${dni}`}
               </label>
             </div>
             <div className="sm:col-span-4">
@@ -111,7 +110,7 @@ const Profile = () => {
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 {`Role: ${
-                  auth.role == "owner" || auth.role == "admin"
+                  role == "owner" || role == "admin"
                     ? "Administrativo"
                     : "Técnico"
                 }`}
