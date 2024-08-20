@@ -4,6 +4,7 @@ import { Error404, Login, Dashboard } from "../pages";
 import {
   Clients,
   DetailClient,
+  DetailOrder,
   Employee,
   Orders,
   PrivateLayout,
@@ -24,6 +25,7 @@ const Routing = () => {
         <Route path="/inicio" element={<PrivateLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="ordenes" element={<Orders />} />
+          <Route path="ordenes/:orderNumber" element={<DetailOrder />} />
           <Route path="perfil" element={<Profile />} />
           <Route path="clientes" element={<Clients />} />
           <Route path="clientes/:clientNumber" element={<DetailClient />} />

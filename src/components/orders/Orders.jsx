@@ -3,9 +3,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useQuery } from "@tanstack/react-query";
 import { Global } from "../../helpers/Global";
+import { Link } from "react-router-dom";
 
 const fetchOrdersByDate = async (startDate, endDate) => {
-  console.log(startDate, endDate);
   const response = await fetch(
     `${Global.endpoints.backend}orders/${startDate}/${endDate}`
   );
@@ -13,7 +13,6 @@ const fetchOrdersByDate = async (startDate, endDate) => {
     throw new Error("Network response was not ok");
   }
   const data = await response.json();
-  console.log(data);
   return {
     ordenes: data,
   };
@@ -32,20 +31,15 @@ const Orders = () => {
   const [endDate, setEndDate] = useState(new Date());
 
   // Usar useQuery con la nueva forma de pasar los argumentos
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["orders"],
+  const { isPending, isError, isSuccess, data, error } = useQuery({
+    queryKey: ["orders", formatDate(startDate), formatDate(endDate)],
     queryFn: () =>
       fetchOrdersByDate(formatDate(startDate), formatDate(endDate)),
     enabled: !!startDate && !!endDate, // Solo fetch cuando ambas fechas están definidas
   });
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>An error occurred: {error.message}</div>;
-
-  console.log(data);
-
   return (
-    <main>
+    <main className="min-h-screen">
       <div className="flex justify-center mt-6">
         <DatePicker
           selected={startDate}
@@ -60,16 +54,40 @@ const Orders = () => {
           className="py-1 px-4 rounded-lg w-32 border mx-2"
         />
       </div>
-
-      <ul>
-        {data.ordenes.map((order) => {
-          return (
-            <ul key={order.id}>
-              <p>{order.orderNumber}</p>
-            </ul>
-          );
-        })}
-      </ul>
+      {isError ? (
+        <div>Ah ocurrido un error: {error.message}</div>
+      ) : isPending ? (
+        <div>Cargando...</div>
+      ) : data.ordenes.length > 0 ? (
+        <ul className="mt-4">
+          {data.ordenes.map((order) => {
+            return (
+              <Link to={`ordenes/${order.orderNumber}`} key={order.id}>
+                <article className="border rounded-2xl px-4 py-2 my-3 mx-6 bg-[#d0d3d4]">
+                  <div className="mb-1">
+                    <label className="font-bold">Numero de orden:</label>
+                    <p className="inline-block ml-2">{order.orderNumber}</p>
+                  </div>
+                  <div className="mb-1">
+                    <label className="font-bold">Tarea:</label>
+                    <p className="inline-block ml-2">{order.taskDescription}</p>
+                  </div>
+                  <div className="mb-1">
+                    <label className="font-bold">Direccion:</label>
+                    <p className="inline-block ml-2">{order.client.address}</p>
+                  </div>
+                  <div className="mb-1">
+                    <label className="font-bold">Tecnico asignado:</label>
+                    <p className="inline-block ml-2">{`${order.userAssigned.firstname} ${order.userAssigned.lastname}`}</p>
+                  </div>
+                </article>
+              </Link>
+            );
+          })}
+        </ul>
+      ) : (
+        <div>No hay ordenes para ese rango de fechas.</div>
+      )}
     </main>
   );
 };
