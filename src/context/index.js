@@ -1,2 +1,1 @@
-export { default as AuthContext } from './AuthContext';
-export * from './GlobalContext';
+export { default as AuthContext } from "./AuthContext";
