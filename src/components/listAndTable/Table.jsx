@@ -8,8 +8,9 @@ import {
 
 import { useCallback, useState } from "react";
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, content }) => {
   const [filtering, setFiltering] = useState("");
+  const { data } = content;
 
   const table = useReactTable({
     data,
@@ -63,7 +64,7 @@ const Table = ({ columns, data }) => {
   ];
 
   return (
-    <div className="mx-3 mt-4">
+    <div className="mx-3 mt-4 text-sm">
       <input
         type="text"
         value={filtering}
@@ -78,7 +79,7 @@ const Table = ({ columns, data }) => {
               <tr key={headerGroup.id} className="w-full">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <th key={header.id} className="py-2 px-4">
+                    <th key={header.id} className="py-1 px-2">
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -90,13 +91,16 @@ const Table = ({ columns, data }) => {
             );
           })}
         </thead>
-        <tbody className="text-center">
+        <tbody className="text-center text-xs">
           {table.getRowModel().rows.map((row) => {
             return (
               <tr key={row.id} className="border">
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id} className="border py-2">
+                    <td
+                      key={cell.id}
+                      className="border py-1.5 px-2 max-w-[150px] truncate"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -115,7 +119,7 @@ const Table = ({ columns, data }) => {
             <button
               key={button.id}
               onClick={button.onClick}
-              className="rounded-md bg-gray-300 px-2.5 py-1.5 text-sm font-semibold shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300 mx-2"
+              className="rounded-md bg-gray-300 px-2.5 py-1.5 text-xs font-semibold shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300 mx-2"
             >
               {button.label}
             </button>

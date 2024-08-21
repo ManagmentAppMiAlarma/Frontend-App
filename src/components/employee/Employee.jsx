@@ -1,6 +1,6 @@
 import React from "react";
 import data from "../../helpers/MOCK_DATA.json";
-import Table from "../table/Table";
+import Table from "../listAndTable/Table";
 
 const Employee = () => {
   const columns = [

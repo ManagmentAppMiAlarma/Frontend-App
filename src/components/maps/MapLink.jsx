@@ -20,7 +20,7 @@ const MapLink = ({ address }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="size-6 text-red-600"
+          className="size-6 text-red-600 relative bottom-0.5"
         >
           <path
             fillRule="evenodd"

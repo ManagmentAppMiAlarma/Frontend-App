@@ -12,4 +12,4 @@ export { default as User } from "./layout/subLayout/user/User";
 export { default as DetailOrder } from "./orders/DetailOrder";
 export { default as Orders } from "./orders/Orders";
 export { default as Profile } from "./profile/Profile";
-export { default as Table } from "./table/Table";
+export { default as Table } from "./listAndTable/Table";
