@@ -54,7 +54,12 @@ const DetailOrder = () => {
 
   return (
     <main className="min-h-screen">
-      <NavBack text={"Detalle de la orden:"} data={data} boolean={true} />
+      <NavBack
+        text={"Detalle de la orden:"}
+        value={true}
+        valueKey={data.orderNumber}
+        update={true}
+      />
       <section className="border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
         <div>
           <label className="font-semibold">Ubicacion:</label>
@@ -144,28 +149,45 @@ const DetailOrder = () => {
         </div>
       </section>
       {auth.role == "admin" || auth.role == "owner" ? (
-        <section className="hidden sm:block border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
+        <section className="hidden sm-block border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
           <div className="text-center">
             <h3 className="font-semibold">Detalles de Pago</h3>
           </div>
-          <div className="text-center mt-3">
-            <div className="flex my-0.5">
-              <label className="font-semibold">Facturar:</label>
-              <p className="ml-2">{`${data.serviceDetails.firstname} ${data.serviceDetails.lastname}`}</p>
-            </div>
-            <div className="flex my-0.5">
-              <label className="font-semibold">C.I.:</label>
-              <p className="ml-2">{data.serviceDetails.dni}</p>
-            </div>
-            <div className="flex my-0.5">
-              <label className="font-semibold">Celular:</label>
-              <p className="ml-2">{data.serviceDetails.phone}</p>
-            </div>
-            <div className="flex my-0.5 relative left-56">
-              <label className="font-semibold">Finalizado:</label>
-              <p className="ml-2">
-                {data.serviceDetails.completed ? "Si" : "No"}
+          <div className="mt-3">
+            <div className="my-1">
+              <div className="flex">
+                <label className="font-semibold">Facturar:</label>
+                <p className="ml-2">
+                  {data.serviceDetailsPayment.invoiceDone ? "Si" : "No"}
+                </p>
+                <p className="ml-24 font-semibold">N Factura: -</p>
+              </div>
+              <p>
+                <span className="font-semibold">Moneda: </span>
+                {data.serviceDetailsPayment.paymentMethod}
               </p>
+            </div>
+            <div className="my-1">
+              <div className="flex">
+                <label className="font-semibold">Ingreso del pago:</label>
+                <p className="ml-2">
+                  {data.serviceDetailsPayment.paymentReceiptDone ? "Si" : "No"}
+                </p>
+              </div>
+              <div className="flex">
+                <label className="font-semibold">
+                  Informacion sobre el pago:
+                </label>
+                <p className="ml-2">
+                  {data.serviceDetailsPayment.paymentReceiptComments}
+                </p>
+              </div>
+              <div className="flex my-1">
+                <label className="font-semibold">Recibo emitido:</label>
+                <p className="ml-2">
+                  {data.serviceDetails.completed ? "Si" : "No"}
+                </p>
+              </div>
             </div>
           </div>
         </section>

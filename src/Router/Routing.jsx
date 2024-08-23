@@ -13,6 +13,7 @@ import {
   UpdateOrder,
 } from "../components";
 import { Logout } from "../services/Logout";
+import CreateClient from "../components/clients/CreateClient";
 
 const Routing = () => {
   return (
@@ -34,6 +35,7 @@ const Routing = () => {
 
           <Route path="perfil" element={<Profile />} />
           <Route path="clientes" element={<ClientsComponent />} />
+          <Route path="clientes/crear" element={<CreateClient />} />
           <Route path="clientes/:clientNumber" element={<DetailClient />} />
           <Route path="empleados" element={<Employee />} />
           <Route path="logout" element={<Logout />} />
