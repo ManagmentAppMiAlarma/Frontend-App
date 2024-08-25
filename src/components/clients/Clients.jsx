@@ -35,20 +35,36 @@ const Clients = () => {
     },
   ];
 
+  const [isOpenCreateClientsModal, setIsOpenCreateClientsModal] =
+    useState(true);
+
+  const handleOpenModalClients = () => {
+    setIsOpenCreateClientsModal(true);
+  };
+  const handleCloseModalClients = () => {
+    setIsOpenCreateClientsModal(false);
+  };
   return (
     <main className="min-h-screen">
-      <NavBack text="Gestion de Clientes" create={true} />
+      <NavBack
+        text="Gestion de Clientes"
+        create={true}
+        handleOpenModalClients={handleOpenModalClients}
+      />
       {isError ? (
         <div>Error al cargar los datos.</div>
       ) : (
         <>
           <ListClients
+            isOpenCreateClientsModal={isOpenCreateClientsModal}
+            handleCloseModalClients={handleCloseModalClients}
             totalPages={totalPages}
             page={page}
             setPage={setPage}
             isLoading={isLoading}
             data={data}
           />
+
           <Table
             content={data}
             columns={columns}

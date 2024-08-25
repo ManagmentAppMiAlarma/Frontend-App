@@ -22,3 +22,4 @@ export { default as DetailOrder } from "./orders/DetailOrder";
 export { default as OrdersComponent } from "./orders/Orders";
 export { default as UpdateOrder } from "./orders/UpdateOrder";
 export { default as Profile } from "./profile/Profile";
+export * from "./modal";

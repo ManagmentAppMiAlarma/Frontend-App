@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Routing from "./Router/Routing";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -37,6 +39,7 @@ function App() {
   return (
     <>
       <Routing />
+      <ToastContainer />
     </>
   );
 }
