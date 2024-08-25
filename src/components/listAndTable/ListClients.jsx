@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Client from "../cards/Client";
-import { useClients } from "../../hooks";
 import Skeleton from "../loadingSkeleton/Clients";
 
-const ListComponent = () => {
-  const [page, setPage] = useState(1);
-  const limit = 10;
-
-  const { data, isLoading, isError } = useClients(page, limit);
-
-  if (isError) return <div>Error al cargar los datos.</div>;
-
-  const totalPages = data ? data?.meta.lastPage : 1;
-
+const ListComponent = ({ totalPages, page, setPage, isLoading, data }) => {
   return (
-    <section className="container mx-auto mt-8 px-2">
+    <section className="container mx-auto mt-8 px-2 sm:hidden">
       {isLoading ? (
         // Mostrar el Skeleton mientras se cargan los datos
         <Skeleton key={0} />

@@ -10,8 +10,8 @@ const NavBack = ({
   create = false,
 }) => {
   return (
-    <div className="border-b flex py-4 px-2 mb-2 ">
-      <button onClick={BackTo} className="ml-2">
+    <div className="border-b flex py-4 px-2 mb-2 justify-center">
+      <button onClick={BackTo} className="ml-2 sm:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -31,7 +31,7 @@ const NavBack = ({
         <label className="font-semibold">{text}</label>
         {value ? <h1 className="inline-block ml-2">{valueKey}</h1> : null}
       </div>
-      <div className="flex">
+      <div className="flex sm:hidden">
         {update ? (
           <Link to={"actualizar"} className="ml-11">
             <svg
