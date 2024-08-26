@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "../listAndTable/Table";
 import UserCreationForm from "./UserCreationForm";
+import { Pagination } from "../pagination";
 
 const Employee = () => {
+  const initialPage = 1;
+  const maxNumberPage = 10;
+
+  const [page, setPage] = useState(initialPage);
   const columns = [
     {
       header: "ID",
@@ -36,6 +41,7 @@ const Employee = () => {
       <h1 className="font-semibold text-2xl mb-3 mt-4">Gestion de empleados</h1>
       <UserCreationForm />
       {/* <Table columns={columns} data={data} /> */}
+      <Pagination className={'p-4'} total={maxNumberPage} current={page} onChange={setPage} />
     </main>
   );
 };
