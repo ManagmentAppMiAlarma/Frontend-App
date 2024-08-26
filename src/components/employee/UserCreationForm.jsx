@@ -32,7 +32,7 @@ export default function UserCreationForm() {
   const toggleModal = () => setIsOpen(!isOpen);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-[calc(100vh-282px)] bg-gray-100">
       <button
         onClick={toggleModal}
         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
