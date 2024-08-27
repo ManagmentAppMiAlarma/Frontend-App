@@ -21,7 +21,7 @@ const ListOrders = ({ isLoading, data }) => {
       });
 
   return (
-    <section className="container mx-auto mt-8 px-2">
+    <section className="container mx-auto mt-8 px-2 sm:flex sm:justify-center">
       {isLoading ? (
         // Mostrar el Skeleton mientras se cargan los datos
         <ul>

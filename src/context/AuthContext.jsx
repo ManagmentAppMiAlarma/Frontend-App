@@ -1,39 +1,51 @@
 import React, { useState, useEffect, createContext } from "react";
+import { VerifySession } from "../services/VerifySession";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({});
-    const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState({});
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        authUser();
-    }, []);
+  useEffect(() => {
+    authUser();
+  }, []);
 
-    const authUser = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const user = localStorage.getItem("user");
+  const authUser = async () => {
+    try {
+      const sessionValid = await VerifySession();
 
-            const userObject = JSON.parse(user);
+      if (!sessionValid) {
+        setLoading(false);
+        navigate("/login");
+        return;
+      }
 
-            if (!token || !user) {
-                setLoading(false);
-                return false;
-            }
+      const token = localStorage.getItem("token");
+      const user = localStorage.getItem("user");
 
-            setAuth(userObject);
-            setLoading(false);
-        } catch (err) {
-            console.error(err)
-        }
-    };
+      const userObject = JSON.parse(user);
 
-    return (
-        <AuthContext.Provider value={{ auth, setAuth, loading }}>
-            {children}
-        </AuthContext.Provider>
-    );
+      if (!token || !user) {
+        setLoading(false);
+        return false;
+      }
+
+      setAuth(userObject);
+      setLoading(false);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ auth, setAuth, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

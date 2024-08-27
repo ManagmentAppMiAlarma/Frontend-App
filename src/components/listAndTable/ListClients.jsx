@@ -111,7 +111,7 @@ const ListComponent = ({
           className="flex h-ful flex-col gap-4 pt-1 pb-4"
         >
           <label className="flex flex-col gap-2">
-            Numero de Cliente 1:
+            Numero de Cliente:
             <input
               onChange={updateClientData}
               type="text"
@@ -121,7 +121,7 @@ const ListComponent = ({
             />
           </label>
           <label className="flex flex-col gap-2">
-            Numero de Cliente 2:
+            Numero de Abonado:
             <input
               onChange={updateClientData}
               type="text"

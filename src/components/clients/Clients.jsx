@@ -36,7 +36,7 @@ const Clients = () => {
   ];
 
   const [isOpenCreateClientsModal, setIsOpenCreateClientsModal] =
-    useState(true);
+    useState(false);
 
   const handleOpenModalClients = () => {
     setIsOpenCreateClientsModal(true);

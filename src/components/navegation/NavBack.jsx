@@ -27,7 +27,7 @@ const NavBack = ({
           />
         </svg>
       </button>
-      <div className="ml-11">
+      <div className="">
         <label className="font-semibold">{text}</label>
         {value ? <h1 className="inline-block ml-2">{valueKey}</h1> : null}
       </div>

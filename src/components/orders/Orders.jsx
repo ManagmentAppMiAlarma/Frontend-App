@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Global } from "../../helpers/Global";
 import "react-loading-skeleton/dist/skeleton.css";
 import ListOrders from "../listAndTable/ListOrders";
+import NavBack from "../navegation/NavBack";
+import OrderCreationForm from "./OrderCreationForm";
 
 const fetchOrdersByDate = async (startDate, endDate) => {
   const response = await fetch(
@@ -41,6 +43,8 @@ const Orders = () => {
 
   return (
     <main className="min-h-screen">
+      <NavBack text="Gestion de Ordenes de Servicio"/>
+      <OrderCreationForm />
       <div className="flex justify-center mt-6">
         <DatePicker
           selected={startDate}

@@ -2,46 +2,65 @@ import React, { useState } from "react";
 import Table from "../listAndTable/Table";
 import UserCreationForm from "./UserCreationForm";
 import { Pagination } from "../pagination";
+import { useUsers } from "../../hooks/useUsers";
+import ListUsers from "../listAndTable/ListUsers";
+import NavBack from "../navegation/NavBack";
 
 const Employee = () => {
-  const initialPage = 1;
-  const maxNumberPage = 10;
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
-  const [page, setPage] = useState(initialPage);
+  const { data, isLoading, isError } = useUsers(page, limit);
+
+  const totalPages = data ? data?.meta.lastPage : 1;
+
   const columns = [
-    {
-      header: "ID",
-      accessorKey: "id",
-    },
     {
       header: "Nombre y Apellido",
       accessorFn: (row) => `${row.firstname} ${row.lastname}`,
     },
-    // {
-    //   header: "Email",
-    //   accessorKey: "email",
-    // },
     {
-      header: "ID",
-      accessorKey: "id",
+      header: "Correo Electronico",
+      accessorKey: "email",
     },
     {
-      header: "ID",
-      accessorKey: "id",
+      header: "Cedula",
+      accessorKey: "dni",
     },
-    // {
-    //   header: "Fecha",
-    //   accessorKey: "fecha",
-    //   cell: (info) => dayjs(into.getValue()).format("DD/MM/YYYY"),
-    // },
+    {
+      header: "Telefono",
+      accessorKey: "phone",
+    },
+    {
+      header: "Permiso",
+      accessorFn: (row) => (row.role == "admin" || row.role == "owner"  ? "Administrador" : "Tecnico"),
+    },
   ];
 
   return (
-    <main className="mb-5 text-center items-center">
-      <h1 className="font-semibold text-2xl mb-3 mt-4">Gestion de empleados</h1>
+    <main className="mb-5 sm:min-h-screen">
+      <NavBack text="Gestion de Empleados" create={true} />
       <UserCreationForm />
-      {/* <Table columns={columns} data={data} /> */}
-      <Pagination className={'p-4'} total={maxNumberPage} current={page} onChange={setPage} />
+      {isError ? (<div>Error al cargar los datos.</div>) : (
+        <>
+        <ListUsers
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+        isLoading={isLoading}
+        data={data}
+      />
+        <Table
+        content={data}
+        columns={columns}
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+        isLoading={isLoading}
+      />
+      </>
+      )}
+      {/* <Pagination className={'p-4'} total={maxNumberPage} current={page} onChange={setPage} /> */}
     </main>
   );
 };
