@@ -48,16 +48,16 @@ const Clients = () => {
     <main className="min-h-screen">
       <NavBack
         text="Gestion de Clientes"
-        create={true}
-        handleOpenModalClients={handleOpenModalClients}
+        disable={false}
+        handleOpenModal={handleOpenModalClients}
       />
       {isError ? (
         <div>Error al cargar los datos.</div>
       ) : (
         <>
           <ListClients
-            isOpenCreateClientsModal={isOpenCreateClientsModal}
-            handleCloseModalClients={handleCloseModalClients}
+            isOpenCreateModal={isOpenCreateClientsModal}
+            handleCloseModal={handleCloseModalClients}
             totalPages={totalPages}
             page={page}
             setPage={setPage}

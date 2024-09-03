@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import Table from "../listAndTable/Table";
-import UserCreationForm from "./UserCreationForm";
-import { Pagination } from "../pagination";
 import { useUsers } from "../../hooks/useUsers";
 import ListUsers from "../listAndTable/ListUsers";
 import NavBack from "../navegation/NavBack";
@@ -33,34 +31,52 @@ const Employee = () => {
     },
     {
       header: "Permiso",
-      accessorFn: (row) => (row.role == "admin" || row.role == "owner"  ? "Administrador" : "Tecnico"),
+      accessorFn: (row) =>
+        row.role == "admin" || row.role == "owner"
+          ? "Administrador"
+          : "Tecnico",
     },
   ];
 
+  const [isOpenCreateUserModal, setIsOpenCreateUserModal] = useState(false);
+
+  const handleOpenModalUser = () => {
+    setIsOpenCreateUserModal(true);
+  };
+  const handleCloseModalUser = () => {
+    setIsOpenCreateUserModal(false);
+  };
+
   return (
     <main className="mb-5 sm:min-h-screen">
-      <NavBack text="Gestion de Empleados" create={true} />
-      <UserCreationForm />
-      {isError ? (<div>Error al cargar los datos.</div>) : (
+      <NavBack
+        text="Gestion de Empleados"
+        handleOpenModal={handleOpenModalUser}
+        disable={false}
+      />
+      {isError ? (
+        <div>Error al cargar los datos.</div>
+      ) : (
         <>
-        <ListUsers
-        totalPages={totalPages}
-        page={page}
-        setPage={setPage}
-        isLoading={isLoading}
-        data={data}
-      />
-        <Table
-        content={data}
-        columns={columns}
-        totalPages={totalPages}
-        page={page}
-        setPage={setPage}
-        isLoading={isLoading}
-      />
-      </>
+          <ListUsers
+            isOpenCreateModal={isOpenCreateUserModal}
+            handleCloseModal={handleCloseModalUser}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+            isLoading={isLoading}
+            data={data}
+          />
+          <Table
+            content={data}
+            columns={columns}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+            isLoading={isLoading}
+          />
+        </>
       )}
-      {/* <Pagination className={'p-4'} total={maxNumberPage} current={page} onChange={setPage} /> */}
     </main>
   );
 };

@@ -26,8 +26,6 @@ const Login = () => {
         console.log("Ha ocurrido un error!");
       }
 
-      console.log(data);
-
       localStorage.setItem("token", data.token);
       localStorage.setItem(
         "user",

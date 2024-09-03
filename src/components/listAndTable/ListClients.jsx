@@ -6,8 +6,8 @@ import { Modal } from "../modal";
 import { toast } from "react-toastify";
 
 const ListComponent = ({
-  isOpenCreateClientsModal,
-  handleCloseModalClients,
+  isOpenCreateModal,
+  handleCloseModal,
   totalPages,
   page,
   setPage,
@@ -34,7 +34,7 @@ const ListComponent = ({
     };
     const response = await updateClients(body);
     if (!response.id) return toast.error("Error al crear el cliente");
-    handleCloseModalClients();
+    handleCloseModal();
     toast.success("Cliente creado correctamente");
   };
 
@@ -92,8 +92,8 @@ const ListComponent = ({
         </button>
       </div>
       <Modal
-        open={isOpenCreateClientsModal}
-        onClose={handleCloseModalClients}
+        open={isOpenCreateModal}
+        onClose={handleCloseModal}
         handlerCleanStates={handlerCleanForm}
         title={"Crear Cliente"}
         size={"md"}

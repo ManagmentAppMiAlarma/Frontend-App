@@ -13,7 +13,7 @@ const fetchClients = async (page = 1, limit = 10) => {
 
 export const updateClients = async (data) => {
   try {
-    const response = await fetch(Global.endpoints.backend + 'clients', {
+    const response = await fetch(Global.endpoints.backend + "clients", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,6 +32,25 @@ export const updateClients = async (data) => {
   }
 };
 
+export const deleteClient = async (clientNumber) => {
+  try {
+    const response = await fetch(
+      `${Global.endpoints.backend}clients/${clientNumber}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      console.log("Network response was not ok " + response.statusText);
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
 export const useClients = (page, limit) => {
   return useQuery({
     queryKey: ["clients", page, limit],
@@ -42,4 +61,4 @@ export const useClients = (page, limit) => {
 
 export const useMutateAddClients = () => {
   return useMutation(updateClients);
-}
+};

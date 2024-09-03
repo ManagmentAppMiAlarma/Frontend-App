@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Global } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import NavBack from "../navegation/NavBack";
 import { useAuth } from "../../hooks/useAuth";
+import DeleteModal from "../modal/DeleteModal";
+import { deleteOrder } from "../../hooks";
 
 const fetchOrderByOrdernumber = async (orderNumber) => {
   try {
@@ -52,15 +54,43 @@ const DetailOrder = () => {
     return <div>Ah ocurrido un error: {error.message}</div>;
   }
 
+  const handleDeleteOrder = async () => {
+    const res = deleteOrder(orderNumber);
+    console.log(res);
+    closeModal();
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
   return (
     <main className="min-h-screen">
       <NavBack
         text={"Detalle de la orden:"}
         value={true}
         valueKey={data.orderNumber}
-        update={true}
       />
-      <section className="border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
+      <section className="border-b mb-3 flex justify-around pb-3 pt-3">
+        <button className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+          Actualizar
+        </button>
+        <button
+          onClick={openModal}
+          className="px-3 py-2 bg-red-600 text-sm font-semibold text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+        >
+          Eliminar Orden
+        </button>
+        <DeleteModal
+          handleDelete={handleDeleteOrder}
+          title="Eliminar Orden"
+          text={`¿Estás seguro de que deseas eliminar la orden ${orderNumber}? Esta acción no se puede deshacer.`}
+          closeModal={closeModal}
+          isOpen={isOpen}
+        />
+      </section>
+      <section className="border rounded-2xl px-4 py-2 mb-3 mx-3 bg-slate-300">
         <div>
           <label className="font-semibold">Ubicacion:</label>
           <MapLink address={data.client.address} />
@@ -115,82 +145,90 @@ const DetailOrder = () => {
               )}
             </div>
           </div>
-          <div className="text-center mt-3">
-            <h3 className="font-semibold">Descripcion:</h3>
-            <div>{data.serviceDetails.description}</div>
-          </div>
-        </div>
-      </section>
-      <section className="border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
-        <div className="text-center">
-          <h3 className="font-semibold">Tareas realizadas:</h3>
-          <div>{data.serviceDetails.taskDone}</div>
-        </div>
-        <div className="text-center mt-3">
-          <h3 className="font-semibold">Recibe:</h3>
-          <div className="flex my-0.5">
-            <label className="font-semibold">Nombre y Apellido:</label>
-            <p className="ml-2">{`${data.serviceDetails.firstname} ${data.serviceDetails.lastname}`}</p>
-          </div>
-          <div className="flex my-0.5">
-            <label className="font-semibold">C.I.:</label>
-            <p className="ml-2">{data.serviceDetails.dni}</p>
-          </div>
-          <div className="flex my-0.5">
-            <label className="font-semibold">Celular:</label>
-            <p className="ml-2">{data.serviceDetails.phone}</p>
-          </div>
-          <div className="flex my-0.5 relative left-56">
-            <label className="font-semibold">Finalizado:</label>
-            <p className="ml-2">
-              {data.serviceDetails.completed ? "Si" : "No"}
-            </p>
-          </div>
-        </div>
-      </section>
-      {auth.role == "admin" || auth.role == "owner" ? (
-        <section className="hidden sm-block border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
-          <div className="text-center">
-            <h3 className="font-semibold">Detalles de Pago</h3>
-          </div>
-          <div className="mt-3">
-            <div className="my-1">
-              <div className="flex">
-                <label className="font-semibold">Facturar:</label>
-                <p className="ml-2">
-                  {data.serviceDetailsPayment.invoiceDone ? "Si" : "No"}
-                </p>
-                <p className="ml-24 font-semibold">N Factura: -</p>
-              </div>
-              <p>
-                <span className="font-semibold">Moneda: </span>
-                {data.serviceDetailsPayment.paymentMethod}
-              </p>
+          {data.serviceDetails !== null ? (
+            <div className="text-center mt-3">
+              <h3 className="font-semibold">Descripcion:</h3>
+              <div>{data.serviceDetails.description}</div>
             </div>
-            <div className="my-1">
-              <div className="flex">
-                <label className="font-semibold">Ingreso del pago:</label>
-                <p className="ml-2">
-                  {data.serviceDetailsPayment.paymentReceiptDone ? "Si" : "No"}
-                </p>
-              </div>
-              <div className="flex">
-                <label className="font-semibold">
-                  Informacion sobre el pago:
-                </label>
-                <p className="ml-2">
-                  {data.serviceDetailsPayment.paymentReceiptComments}
-                </p>
-              </div>
-              <div className="flex my-1">
-                <label className="font-semibold">Recibo emitido:</label>
-                <p className="ml-2">
-                  {data.serviceDetails.completed ? "Si" : "No"}
-                </p>
-              </div>
+          ) : null}
+        </div>
+      </section>
+      {data.serviceDetails !== null ? (
+        <section className="border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
+          <div className="text-center">
+            <h3 className="font-semibold">Tareas realizadas:</h3>
+            <div>{data.serviceDetails.taskDone}</div>
+          </div>
+          <div className="text-center mt-3">
+            <h3 className="font-semibold">Recibe:</h3>
+            <div className="flex my-0.5">
+              <label className="font-semibold">Nombre y Apellido:</label>
+              <p className="ml-2">{`${data.serviceDetails.firstname} ${data.serviceDetails.lastname}`}</p>
+            </div>
+            <div className="flex my-0.5">
+              <label className="font-semibold">C.I.:</label>
+              <p className="ml-2">{data.serviceDetails.dni}</p>
+            </div>
+            <div className="flex my-0.5">
+              <label className="font-semibold">Celular:</label>
+              <p className="ml-2">{data.serviceDetails.phone}</p>
+            </div>
+            <div className="flex my-0.5 relative left-56">
+              <label className="font-semibold">Finalizado:</label>
+              <p className="ml-2">
+                {data.serviceDetails.completed ? "Si" : "No"}
+              </p>
             </div>
           </div>
         </section>
+      ) : null}
+      {data.serviceDetailsPayment !== null ? (
+        auth.role == "admin" || auth.role == "owner" ? (
+          <section className="hidden sm-block border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300">
+            <div className="text-center">
+              <h3 className="font-semibold">Detalles de Pago</h3>
+            </div>
+            <div className="mt-3">
+              <div className="my-1">
+                <div className="flex">
+                  <label className="font-semibold">Facturar:</label>
+                  <p className="ml-2">
+                    {data.serviceDetailsPayment.invoiceDone ? "Si" : "No"}
+                  </p>
+                  <p className="ml-24 font-semibold">N Factura: -</p>
+                </div>
+                <p>
+                  <span className="font-semibold">Moneda: </span>
+                  {data.serviceDetailsPayment.paymentMethod}
+                </p>
+              </div>
+              <div className="my-1">
+                <div className="flex">
+                  <label className="font-semibold">Ingreso del pago:</label>
+                  <p className="ml-2">
+                    {data.serviceDetailsPayment.paymentReceiptDone
+                      ? "Si"
+                      : "No"}
+                  </p>
+                </div>
+                <div className="flex">
+                  <label className="font-semibold">
+                    Informacion sobre el pago:
+                  </label>
+                  <p className="ml-2">
+                    {data.serviceDetailsPayment.paymentReceiptComments}
+                  </p>
+                </div>
+                <div className="flex my-1">
+                  <label className="font-semibold">Recibo emitido:</label>
+                  <p className="ml-2">
+                    {data.serviceDetails.completed ? "Si" : "No"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : null
       ) : null}
     </main>
   );
