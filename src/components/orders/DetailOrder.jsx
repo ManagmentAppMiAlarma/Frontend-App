@@ -28,6 +28,15 @@ const fetchOrderByOrdernumber = async (orderNumber) => {
 const DetailOrder = () => {
   const { orderNumber } = useParams();
   const { auth } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleDeleteOrder = async () => {
+    const res = deleteOrder(orderNumber);
+    closeModal();
+  };
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["order"],
@@ -53,17 +62,6 @@ const DetailOrder = () => {
   if (isError) {
     return <div>Ah ocurrido un error: {error.message}</div>;
   }
-
-  const handleDeleteOrder = async () => {
-    const res = deleteOrder(orderNumber);
-    console.log(res);
-    closeModal();
-  };
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
 
   return (
     <main className="min-h-screen">
