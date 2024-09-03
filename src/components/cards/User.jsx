@@ -14,7 +14,7 @@ const User = ({ user }) => {
           <p className="inline-block ml-2">{`${user.firstname} ${user.lastname}`}</p>
         </div>
         <div className="my-0.5">
-          <label className="font-bold">Correo Electronico:</label>
+          <label className="font-bold">Email:</label>
           <p className="inline-block ml-2">{user.email}</p>
         </div>
         <div className="my-0.5">

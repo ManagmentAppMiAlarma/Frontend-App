@@ -2,22 +2,22 @@ import React from "react";
 
 const Skeleton = () => {
   return (
-    <article className="bg-slate-300 p-2 rounded-lg animate-pulse">
-      <div className="mb-2">
+    <article className="rounded-2xl px-4 py-2 my-3 mx-1 bg-slate-300 animate-pulse">
+      <div className="my-0.5 flex">
         <label className="font-bold">Nº Cliente:</label>
-        <div className="inline-block ml-2 bg-slate-200 h-4 w-24 rounded"></div>
+        <div className="inline-block ml-2 bg-gray-200 w-40 blur-[1px] rounded-xl"></div>
       </div>
-      <div className="mb-2">
+      <div className="my-0.5 flex">
         <label className="font-bold">Nombre y Apellido:</label>
-        <div className="inline-block ml-2 bg-slate-200 h-4 w-40 rounded"></div>
+        <div className="inline-block ml-2 bg-gray-200 w-40 blur-[1px] rounded-xl"></div>
       </div>
-      <div className="mb-2">
-        <label className="font-bold">Telefono:</label>
-        <div className="inline-block ml-2 bg-slate-200 h-4 w-32 rounded"></div>
+      <div className="my-0.5 flex">
+        <label className="font-bold">Teléfono:</label>
+        <div className="inline-block ml-2 bg-gray-200 w-40 blur-[1px] rounded-xl"></div>
       </div>
-      <div>
-        <label className="font-bold">Direccion:</label>
-        <div className="inline-block ml-2 bg-slate-200 h-4 w-56 rounded"></div>
+      <div className="my-0.5 flex">
+        <label className="font-bold">Dirección:</label>
+        <div className="inline-block ml-2 bg-gray-200 w-64 blur-[1px] rounded-xl"></div>
       </div>
     </article>
   );

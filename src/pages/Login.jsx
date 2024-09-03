@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth, useForm } from "../hooks";
 import { Global } from "../helpers/Global";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { MsgError } from "../components/modal";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const { setAuth } = useAuth();
   const { form, changed } = useForm();
 
@@ -20,11 +25,11 @@ const Login = () => {
         body: JSON.stringify(dataUser),
       });
 
-      const data = await res.json();
-
       if (res.status !== 201) {
-        console.log("Ha ocurrido un error!");
+        console.log(res, dataUser);
       }
+
+      const data = await res.json();
 
       localStorage.setItem("token", data.token);
       localStorage.setItem(
@@ -43,17 +48,20 @@ const Login = () => {
       );
 
       setAuth(data.user);
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 400);
     } catch (e) {
+      MsgError("Ha ocurrido un error!");
       throw new Error("Ha ocurrido un error!");
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
     <>
       <main className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <ToastContainer />
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             src={Global.images.logo}
@@ -82,7 +90,7 @@ const Login = () => {
                   onChange={changed}
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -100,12 +108,23 @@ const Login = () => {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   onChange={changed}
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="relative bottom-7 left-[348px]"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
               </div>
             </div>
 

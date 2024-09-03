@@ -65,7 +65,13 @@ const ListUsers = ({
     <section className="container mx-auto mt-8 px-2 sm:hidden">
       {isLoading ? (
         // Mostrar el Skeleton mientras se cargan los datos
-        <Skeleton key={0} />
+        <ul>
+          {[...Array(4)].map((_, index) => (
+            <li key={index}>
+              <Skeleton />
+            </li>
+          ))}
+        </ul>
       ) : (
         // Mostrar los datos cuando se hayan cargado
         data?.data?.map((user) => <User user={user} key={user.id} />)
