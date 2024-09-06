@@ -6,14 +6,14 @@ const NavBack = ({
   text,
   valueKey,
   value = false,
-  disable = true,
+  disable = false,
   handleOpenModal,
 }) => {
   const { auth } = useAuth();
   const { role } = auth;
   return (
     <div className="border-b flex py-4 px-2 mb-2 justify-center gap-11">
-      <button onClick={BackTo} className="ml-2 sm:hidden">
+      <button onClick={BackTo} className="ml-2 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

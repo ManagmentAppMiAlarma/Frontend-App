@@ -6,12 +6,38 @@ import DeleteModal from "../modal/DeleteModal";
 import { deleteUser } from "../../hooks";
 import { toast } from "react-toastify";
 import Skeleton from "../loadingSkeleton/Clients";
+import UserDesktop from "../cards/UserDesktop";
+
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 const DetailUser = () => {
   const { dni } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth < 500);
+
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      setIsMobileView(window.innerWidth < 500);
+    }, 200);
+
+    window.addEventListener("resize", handleResize);
+
+    // Limpiar el event listener al desmontar el componente
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     getUserByDNI(dni, setLoading, setUser);
@@ -32,7 +58,12 @@ const DetailUser = () => {
 
   return (
     <main className="min-h-screen">
-      <NavBack text={"Detalle del usuario:"} value={true} valueKey={dni} />
+      <NavBack
+        text={"Detalle del usuario:"}
+        value={true}
+        valueKey={dni}
+        disable={true}
+      />
       <section className="border-b mb-3 flex justify-around pb-3 pt-3">
         <button className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
           Actualizar
@@ -53,7 +84,7 @@ const DetailUser = () => {
       </section>
       {loading ? (
         <Skeleton />
-      ) : (
+      ) : isMobileView ? (
         <section className="border rounded-2xl px-4 py-2 mb-3 mx-3 bg-slate-300">
           <div className="flex mt-2">
             <label className="font-semibold">Nombre Completo:</label>
@@ -80,6 +111,8 @@ const DetailUser = () => {
             </p>
           </div>
         </section>
+      ) : (
+        <UserDesktop user={user} />
       )}
     </main>
   );

@@ -141,114 +141,89 @@ const Orders = () => {
             </button>
           }
         >
-          <form onSubmit={handleAddOrders} className="space-y-4 p-6">
-            <div>
-              <label
-                htmlFor="orderNumber"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Número de Orden
-              </label>
+          <form
+            onSubmit={handleAddOrders}
+            className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pt-1 pb-4 sm:text-sm sm:mt-4"
+          >
+            <label htmlFor="orderNumber" className="flex flex-col gap-2">
+              Número de Orden:
               <input
                 id="orderNumber"
                 name="orderNumber"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm"
+                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
                 value={orderData.orderNumber}
                 onChange={updateOrderData}
               />
-            </div>
+            </label>
 
-            <div>
-              <label
-                htmlFor="dateOfOrder"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Fecha de Orden
-              </label>
+            <label htmlFor="dateOfOrder" className="flex flex-col gap-2">
+              Fecha de Orden:
               <input
                 id="dateOfOrder"
                 name="dateOfOrder"
                 placeholder="dd/mm/yyyy"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm"
+                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
                 value={orderData.dateOfOrder}
                 onChange={updateOrderData}
               />
-            </div>
+            </label>
 
-            <div>
-              <label
-                htmlFor="clientNumber"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Número de Cliente
-              </label>
+            <label htmlFor="clientNumber" className="flex flex-col gap-2">
+              Número de Cliente:
               <input
                 id="clientNumber"
                 name="clientNumber"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm"
+                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
                 value={orderData.clientNumber}
                 onChange={updateOrderData}
               />
-            </div>
+            </label>
 
-            <div>
-              <label
-                htmlFor="taskDescription"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Descripción de la Tarea
-              </label>
-              <textarea
-                id="taskDescription"
-                name="taskDescription"
-                rows="3"
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm resize-none"
-                value={orderData.taskDescription}
-                onChange={updateOrderData}
-              ></textarea>
-            </div>
-
-            <div>
-              <label
-                htmlFor="userAssignedDni"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                DNI del Usuario Asignado
-              </label>
+            <label htmlFor="userAssignedDni" className="flex flex-col gap-2">
+              DNI del Usuario Asignado:
               <input
                 id="userAssignedDni"
                 name="userAssignedDni"
                 type="text"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 text-sm"
+                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
                 value={orderData.userAssignedDni}
                 onChange={updateOrderData}
               />
-            </div>
+            </label>
+            <label htmlFor="taskDescription" className="flex flex-col gap-2">
+              Descripción de la Tarea:
+              <textarea
+                id="taskDescription"
+                name="taskDescription"
+                rows="3"
+                required
+                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-24 resize-none"
+                value={orderData.taskDescription}
+                onChange={updateOrderData}
+              ></textarea>
+            </label>
 
-            <div className="flex items-center">
+            <label
+              htmlFor="coordinated"
+              className="flex items-center gap-2 sm:col-span-2"
+            >
               <input
                 id="coordinated"
                 name="coordinated"
                 type="checkbox"
-                className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                className="border border-gray-300 rounded-lg p-2 sm:border-gray-400 sm:rounded-xl"
                 checked={orderData.coordinated}
                 onChange={updateOrderData}
-              />
-              <label
-                htmlFor="coordinated"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Coordinado
-              </label>
-            </div>
+              />{" "}
+              Coordinado
+            </label>
             {response.message && (
               <ul>
                 <li>{response.message[0]}</li>

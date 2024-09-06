@@ -5,7 +5,15 @@ const customSizes = {
   md: "md:w-[90vw] md:h-[90vh] lg:w-[50vw] lg:h-min max-h-screen lg:max-h-[90vh]",
   lg: "md:w-[90vw] md:h-[90vh] lg:w-[70vw] lg:h-min max-h-screen lg:max-h-[90vh]",
 };
-export function Modal({ open, onClose, children, size, title, footerChild, handlerCleanStates }) {
+export function Modal({
+  open,
+  onClose,
+  children,
+  size,
+  title,
+  footerChild,
+  handlerCleanStates,
+}) {
   useEffect(() => {
     open
       ? document.body.classList.add("overflow-hidden")
@@ -30,7 +38,6 @@ export function Modal({ open, onClose, children, size, title, footerChild, handl
         } ${customSizes[size] ?? customSizes.lg}`}
       >
         <ModalHeader title={title} onClose={onClose} />
-        <hr className="text-400" />
         <ModalBody>{children}</ModalBody>
         {footerChild && <ModalFooter>{footerChild}</ModalFooter>}
       </div>
@@ -40,8 +47,8 @@ export function Modal({ open, onClose, children, size, title, footerChild, handl
 
 const ModalHeader = ({ onClose, title }) => {
   return (
-    <header className="flex justify-between">
-      <h2>{title}</h2>
+    <header className="flex justify-between border-b border-gray-300 pb-2">
+      <h2 className="sm:text-xl">{title}</h2>
       <button
         onClick={onClose}
         className="rounded-lg text-gray-500 bg-white hover:bg-gray-200 hover:text-gray-700"

@@ -117,7 +117,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="relative bottom-7 left-[348px]"
+                  className="relative bottom-7 left-[300px] sm:left-[350px]"
                 >
                   {showPassword ? (
                     <EyeSlashIcon className="h-5 w-5 text-gray-400" />
