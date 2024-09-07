@@ -1,76 +1,50 @@
 import React from "react";
-import NavBackLoading from "./NavBackLoading";
 
-const Skeleton = ({ auth }) => {
+const Skeleton = () => {
   return (
-    <main className="min-h-screen">
-      <NavBackLoading />
-      <section className="border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300 animate-pulse">
-        <div className="flex mb-2">
-          <div className="bg-gray-200 w-32 h-4 blur-[1px] rounded-xl ml-2"></div>
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 rounded-xl shadow-lg max-w-4xl mx-auto mt-4 sm:mt-6 md:mt-10 overflow-hidden animate-pulse">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6">
+        <div className="bg-gray-200 h-8 sm:h-10 w-48 rounded-lg blur-[1px]"></div>
+        <div className="bg-gray-200 h-6 sm:h-8 w-24 rounded-lg blur-[1px]"></div>
+      </div>
+
+      {/* Cliente Info */}
+      <div className="bg-white rounded-lg p-4 sm:p-6 shadow-inner mb-4 sm:mb-6">
+        <div className="bg-gray-200 h-6 sm:h-8 w-56 mb-3 sm:mb-4 rounded-lg blur-[1px]"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="bg-gray-200 h-6 sm:h-8 w-40 rounded-lg blur-[1px]"></div>
+          <div className="bg-gray-200 h-6 sm:h-8 w-40 rounded-lg blur-[1px]"></div>
+          <div className="col-span-1 sm:col-span-2 bg-gray-200 h-6 sm:h-8 w-full rounded-lg blur-[1px]"></div>
+          <div className="bg-gray-200 h-6 sm:h-8 w-40 rounded-lg blur-[1px]"></div>
+          <div className="bg-gray-200 h-6 sm:h-8 w-32 rounded-lg blur-[1px]"></div>
         </div>
-        <div className="flex mb-2">
-          <div className="flex my-0.5">
-            <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-          </div>
-          <div className="flex ml-7 my-0.5">
-            <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-          </div>
+      </div>
+
+      {/* Servicio Info */}
+      <div className="bg-white rounded-lg p-4 sm:p-6 shadow-inner mb-4 sm:mb-6">
+        <div className="bg-gray-200 h-6 sm:h-8 w-56 mb-3 sm:mb-4 rounded-lg blur-[1px]"></div>
+        <div className="space-y-3 sm:space-y-4">
+          <div className="bg-gray-200 h-6 sm:h-8 w-40 rounded-lg blur-[1px]"></div>
+          <div className="bg-gray-200 h-12 sm:h-16 w-full rounded-lg blur-[1px]"></div>
         </div>
-        <div className="flex mb-2">
-          <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
+      </div>
+
+      {/* Estado y Asignación */}
+      <div className="bg-white rounded-lg p-4 sm:p-6 shadow-inner">
+        <div className="bg-gray-200 h-6 sm:h-8 w-56 mb-3 sm:mb-4 rounded-lg blur-[1px]"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="bg-gray-200 h-6 sm:h-8 w-32 rounded-lg blur-[1px]"></div>
+          <div className="bg-gray-200 h-6 sm:h-8 w-40 rounded-lg blur-[1px]"></div>
+          <div className="col-span-1 sm:col-span-2 bg-gray-200 h-6 sm:h-8 w-full rounded-lg blur-[1px]"></div>
         </div>
-        <div className="text-center mt-3">
-          <h3 className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></h3>
-          <div className="bg-gray-200 w-64 h-4 blur-[1px] rounded-xl mx-auto mt-2"></div>
-        </div>
-      </section>
-      <section className="border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300 animate-pulse">
-        <div className="text-center">
-          <h3 className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></h3>
-          <div className="bg-gray-200 w-64 h-4 blur-[1px] rounded-xl mx-auto mt-2"></div>
-        </div>
-        <div className="text-center mt-3">
-          <div className="flex mb-2">
-            <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-          </div>
-          <div className="flex mb-2">
-            <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-          </div>
-          <div className="flex mb-2">
-            <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-          </div>
-          <div className="flex mb-2 relative left-56">
-            <div className="ml-2 bg-gray-200 w-16 h-4 w-24 blur-[1px] rounded-xl"></div>
-          </div>
-        </div>
-      </section>
-      {auth.role == "admin" || auth.role == "owner" ? (
-        <section className="hidden sm:block border rounded-2xl px-4 py-2 my-3 mx-3 bg-slate-300 animate-pulse">
-          <div className="text-center">
-            <h3 className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></h3>
-          </div>
-          <div className="text-center mt-3">
-            <div className="flex mb-2">
-              <label className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></label>
-              <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-            </div>
-            <div className="flex mb-2">
-              <label className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></label>
-              <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-            </div>
-            <div className="flex mb-2">
-              <label className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></label>
-              <div className="ml-2 bg-gray-200 w-32 h-4 blur-[1px] rounded-xl"></div>
-            </div>
-            <div className="flex mb-2 relative left-56">
-              <label className="font-semibold bg-gray-200 w-24 h-4 blur-[1px] rounded-xl"></label>
-              <div className="ml-2 bg-gray-200 w-16 h-4 blur-[1px] rounded-xl"></div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-    </main>
+      </div>
+
+      {/* Botón */}
+      <div className="mt-6">
+        <div className="w-full sm:w-40 h-10 bg-gray-200 rounded-full blur-[1px]"></div>
+      </div>
+    </div>
   );
 };
 

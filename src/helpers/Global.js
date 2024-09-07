@@ -1,7 +1,7 @@
 export const Global = {
   endpoints: {
-    // backend: "http://34.238.44.88:8080/api/",
-    backend: "http://localhost:8080/api/",
+    backend: "http://34.238.44.88:8080/api/",
+    // backend: "http://localhost:8080/api/",
   },
   actionType: {
     SET_CLIENTS: "SET_CLIENTS",

@@ -32,98 +32,83 @@ const Table = ({
   });
 
   return (
-    <div className="max-w-fit mt-4 text-sm hidden sm:block mx-auto">
-      <table className="w-full my-2 border">
-        <thead className="bg-red-500">
-          {table.getHeaderGroups().map((headerGroup) => {
-            return (
-              <tr key={headerGroup.id} className="w-full">
-                {headerGroup.headers.map((header) => {
+    <div className="hidden sm:block max-w-6xl mt-4 text-sm mx-auto px-4">
+      <div className="overflow-x-auto shadow-lg rounded-lg">
+        <table className="w-full bg-white">
+          <thead className="bg-gray-800 text-white">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="py-3 px-4 text-left font-semibold"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, rowIndex) => (
+              <tr
+                key={row.id}
+                className={rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  const isClickable =
+                    (caseFor === "clients" &&
+                      cell.column.id === "clientNumber") ||
+                    (caseFor === "employee" && cell.column.id === "dni");
+
                   return (
-                    <th key={header.id} className="py-1 px-2">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
+                    <td
+                      key={cell.id}
+                      className="py-3 px-4 border-b border-gray-200"
+                    >
+                      {isClickable ? (
+                        <Link
+                          to={
+                            path === "/inicio"
+                              ? `/${
+                                  caseFor === "clients"
+                                    ? "clientes"
+                                    : "empleados"
+                                }/${
+                                  caseFor === "clients"
+                                    ? row.original.clientNumber
+                                    : row.original.dni
+                                }`
+                              : `${
+                                  caseFor === "clients"
+                                    ? row.original.clientNumber
+                                    : row.original.dni
+                                }`
+                          }
+                          className="text-blue-600 hover:text-blue-800 hover:underline"
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </Link>
+                      ) : (
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )
                       )}
-                    </th>
+                    </td>
                   );
                 })}
               </tr>
-            );
-          })}
-        </thead>
-        <tbody className="text-center text-xs">
-          {table.getRowModel().rows.map((row) => {
-            return (
-              <tr key={row.id} className="border">
-                {row.getVisibleCells().map((cell) => {
-                  if (caseFor === "clients") {
-                    const isClickable = cell.column.id === "clientNumber";
-
-                    return (
-                      <td
-                        key={cell.id}
-                        className="border py-1.5 px-2 min-w-fit truncate"
-                      >
-                        {isClickable ? (
-                          <Link
-                            to={
-                              path === "/inicio"
-                                ? `/clientes/${row.original.clientNumber}`
-                                : `${row.original.clientNumber}`
-                            }
-                            className="text-blue-500 hover:underline"
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </Link>
-                        ) : (
-                          flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )
-                        )}
-                      </td>
-                    );
-                  } else if (caseFor === "employee") {
-                    const isClickable = cell.column.id === "dni";
-
-                    return (
-                      <td
-                        key={cell.id}
-                        className="border py-1.5 px-2 min-w-fit truncate"
-                      >
-                        {isClickable ? (
-                          <Link
-                            to={
-                              path === "/inicio"
-                                ? `/empleados/${row.original.dni}`
-                                : `${row.original.dni}`
-                            }
-                            className="text-blue-500 hover:underline"
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </Link>
-                        ) : (
-                          flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )
-                        )}
-                      </td>
-                    );
-                  } else null;
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

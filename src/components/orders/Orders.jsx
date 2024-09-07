@@ -102,7 +102,7 @@ const Orders = () => {
   return (
     <main className="min-h-screen">
       <NavBack
-        text="Gestion de Ordenes de Servicio"
+        text="Gestion de Ordenes"
         handleOpenModal={handleOpenModalOrders}
         disable={false}
       />

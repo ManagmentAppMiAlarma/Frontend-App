@@ -65,6 +65,13 @@ const DetailClient = () => {
         value={true}
         valueKey={clientNumber}
       />
+      {loading ? (
+        <Skeleton />
+      ) : isMobileView ? (
+        <Client client={client} link={false} />
+      ) : (
+        <ClientDesktop client={client} />
+      )}
       <section className="mb-3 flex justify-center pb-3 pt-3">
         <button className="mx-4 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
           Actualizar
@@ -83,13 +90,6 @@ const DetailClient = () => {
           isOpen={isOpen}
         />
       </section>
-      {loading ? (
-        <Skeleton />
-      ) : isMobileView ? (
-        <Client client={client} link={false} />
-      ) : (
-        <ClientDesktop client={client} />
-      )}
     </main>
   );
 };

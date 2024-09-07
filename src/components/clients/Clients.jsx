@@ -9,6 +9,9 @@ import { Global, paymentMethodType } from "../../helpers";
 
 const Clients = () => {
   const [page, setPage] = useState(1);
+  const [isOpenCreateClientsModal, setIsOpenCreateClientsModal] =
+    useState(false);
+  const [checked, setChecked] = useState(true);
   const limit = 10;
 
   const { data, isLoading, isError } = useClients(page, limit);
@@ -57,9 +60,6 @@ const Clients = () => {
     },
   ];
 
-  const [isOpenCreateClientsModal, setIsOpenCreateClientsModal] =
-    useState(false);
-
   const handleOpenModalClients = () => {
     setIsOpenCreateClientsModal(true);
   };
@@ -75,15 +75,19 @@ const Clients = () => {
     email: "",
     phone: "",
     address: "",
+    customer: true,
+    amount: 0,
+    paymentMethod: "",
   });
 
   const handleAddClient = async (e) => {
     e?.preventDefault();
     const body = {
       ...clientData,
-      customer: true,
     };
+    console.log(body);
     const response = await updateClients(body);
+    console.log(response);
     if (!response.id) return toast.error("Error al crear el cliente");
     handleCloseModalClients();
     toast.success("Cliente creado correctamente");
@@ -98,13 +102,18 @@ const Clients = () => {
       email: "",
       phone: "",
       address: "",
+      customer: true,
+      amount: 0,
+      paymentMethod: "",
     });
   };
 
   const updateClientData = (e) => {
+    const { name, value, type, checked } = e.target;
+    setChecked(checked);
     setClientData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
   return (
@@ -149,81 +158,127 @@ const Clients = () => {
               </button>
             }
           >
-            <form
-              onSubmit={handleAddClient}
-              className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pt-1 pb-4 sm:text-sm sm:mt-4"
-            >
-              <label className="flex flex-col gap-2">
-                Numero de Cliente:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="clientNumber"
-                  value={clientData.clientNumber}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                Numero de Abonado:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="customerNumber"
-                  value={clientData.customerNumber}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
+            <form onSubmit={handleAddClient}>
+              <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pt-1 sm:text-sm sm:mt-4">
+                <label className="flex flex-col gap-2">
+                  Numero de Cliente:
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="clientNumber"
+                    value={clientData.clientNumber}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
 
-              <label className="flex flex-col gap-2">
-                Nombre:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="firstname"
-                  value={clientData.firstname}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                Apellido:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="lastname"
-                  value={clientData.lastname}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                Email:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="email"
-                  value={clientData.email}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                Telefono:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="phone"
-                  value={clientData.phone}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
-              <label className="flex flex-col gap-2">
-                Direccion:
-                <input
-                  onChange={updateClientData}
-                  type="text"
-                  name="address"
-                  value={clientData.address}
-                  className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                />
-              </label>
+                <label className="flex flex-col gap-2">
+                  Nombre:
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="firstname"
+                    value={clientData.firstname}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  Apellido:
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="lastname"
+                    value={clientData.lastname}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  Email: (Opcional)
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="email"
+                    value={clientData.email}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  Telefono:
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="phone"
+                    value={clientData.phone}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  Direccion:
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="address"
+                    value={clientData.address}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+                <label
+                  htmlFor="coordinated"
+                  className="flex items-center gap-2 sm:col-span-2"
+                >
+                  Es Abonado?{" "}
+                  <input
+                    id="customer"
+                    name="customer"
+                    type="checkbox"
+                    className="border border-gray-300 rounded-lg p-2 sm:border-gray-400 sm:rounded-xl"
+                    checked={clientData.customer}
+                    onChange={updateClientData}
+                  />
+                </label>
+              </div>
+              <div
+                className={
+                  "flex flex-col sm:grid sm:grid-cols-2 gap-4 pb-4 sm:text-sm sm:mt-4"
+                }
+              >
+                <label className="flex flex-col gap-2">
+                  Forma de Pago:
+                  <select
+                    id="paymentMethod"
+                    name="paymentMethod"
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                    value={clientData.paymentMethod}
+                    onChange={updateClientData}
+                  >
+                    <option value="">Seleccione una Forma de Pago</option>
+                    <option value="CASH">Efectivo</option>
+                    <option value="VISA">Visa</option>
+                    <option value="MASTERCARD">MasterCard</option>
+                    <option value="OCA">Oca</option>
+                    <option value="TRANSFER">Transferencia</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-2">
+                  Numero de Abonado:
+                  <input
+                    onChange={updateClientData}
+                    type="text"
+                    name="customerNumber"
+                    value={clientData.customerNumber}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+                <label className="flex flex-col gap-2">
+                  Monto Mensual:
+                  <input
+                    onChange={updateClientData}
+                    type="number"
+                    name="amount"
+                    value={clientData.amount}
+                    className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
+                  />
+                </label>
+              </div>
             </form>
           </Modal>
         </>

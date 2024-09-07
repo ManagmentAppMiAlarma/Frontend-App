@@ -1,4 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
+import {
+  CalendarIcon,
+  ClipboardDocumentListIcon,
+  MapPinIcon,
+  UserIcon,
+  IdentificationIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
 
 const Order = ({ order }) => {
   const location = useLocation();
@@ -11,28 +19,53 @@ const Order = ({ order }) => {
           : `${order.orderNumber}`
       }
     >
-      <article className="rounded-2xl px-4 py-2 my-3 mx-1 bg-slate-300 sm:w-[380px]">
-        <div className="mb-1">
-          <label className="font-bold">Nº orden:</label>
-          <p className="inline-block ml-2">{order.orderNumber}</p>
+      <div className="bg-gray-50 shadow-lg rounded-lg overflow-hidden border border-gray-200">
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-gray-800">
+              Orden de Trabajo
+            </h2>
+            <div className="flex items-center text-gray-600">
+              <IdentificationIcon className="h-5 w-5 mr-2" />
+              <span className="font-semibold">{order.orderNumber}</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center text-gray-700">
+              <CalendarIcon className="h-4 w-4 mr-2 text-blue-600" />
+              <span className="text-sm">Fecha: {order.dateOfOrder}</span>
+            </div>
+
+            <div className="flex items-center text-gray-700">
+              <ClipboardDocumentListIcon className="h-4 w-4 mr-2 text-green-600" />
+              <span className="text-sm">Tarea: {order.taskDescription}</span>
+            </div>
+
+            <div className="flex items-center text-gray-700">
+              <MapPinIcon className="h-4 w-4 mr-2 text-red-600" />
+              <span className="text-sm">Dirección: {order.client.address}</span>
+            </div>
+
+            <div className="flex items-center text-gray-700">
+              <UserGroupIcon className="h-4 w-4 mr-2 text-yellow-600" />
+              <span className="text-sm">
+                Cliente: {order.client.firstname + " " + order.client.lastname}
+              </span>
+            </div>
+
+            <div className="flex items-center text-gray-700">
+              <UserIcon className="h-4 w-4 mr-2 text-purple-600" />
+              <span className="text-sm">
+                Técnico:{" "}
+                {order.userAssigned.firstname +
+                  " " +
+                  order.userAssigned.lastname}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="mb-1">
-          <label className="font-bold">Fecha:</label>
-          <p className="inline-block ml-2">{order.dateOfOrder}</p>
-        </div>
-        <div className="mb-1">
-          <label className="font-bold">Tarea:</label>
-          <p className="inline-block ml-2">{order.taskDescription}</p>
-        </div>
-        <div className="mb-1">
-          <label className="font-bold">Direccion:</label>
-          <p className="inline-block ml-2">{order.client.address}</p>
-        </div>
-        <div className="mb-1">
-          <label className="font-bold">Tecnico asignado:</label>
-          <p className="inline-block ml-2">{`${order.userAssigned.firstname} ${order.userAssigned.lastname}`}</p>
-        </div>
-      </article>
+      </div>
     </Link>
   );
 };
