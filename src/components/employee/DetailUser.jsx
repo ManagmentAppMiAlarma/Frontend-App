@@ -7,6 +7,7 @@ import { deleteUser } from "../../hooks";
 import { toast } from "react-toastify";
 import Skeleton from "../loadingSkeleton/Clients";
 import UserDesktop from "../cards/UserDesktop";
+import User from "../cards/User";
 
 function debounce(func, wait) {
   let timeout;
@@ -64,7 +65,14 @@ const DetailUser = () => {
         valueKey={dni}
         disable={true}
       />
-      <section className="border-b mb-3 flex justify-around pb-3 pt-3">
+      {loading ? (
+        <Skeleton />
+      ) : isMobileView ? (
+        <User user={user} link={false} />
+      ) : (
+        <UserDesktop user={user} />
+      )}
+      <section className="mb-3 flex justify-around pb-3 pt-3">
         <button className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
           Actualizar
         </button>
@@ -82,38 +90,6 @@ const DetailUser = () => {
           isOpen={isOpen}
         />
       </section>
-      {loading ? (
-        <Skeleton />
-      ) : isMobileView ? (
-        <section className="border rounded-2xl px-4 py-2 mb-3 mx-3 bg-slate-300">
-          <div className="flex mt-2">
-            <label className="font-semibold">Nombre Completo:</label>
-            <p className="ml-2">{`${user.firstname} ${user.lastname}`}</p>
-          </div>
-          <div className="flex my-0.5">
-            <label className="font-semibold">DNI:</label>
-            <p className="ml-2">{user.dni}</p>
-          </div>
-          <div className="flex my-0.5">
-            <label className="font-semibold">Telefono:</label>
-            <p className="ml-2">{user.phone}</p>
-          </div>
-          <div className="flex my-0.5">
-            <label className="font-semibold">Email:</label>
-            <p className="ml-2">{user.email}</p>
-          </div>
-          <div className="flex my-0.5">
-            <label className="font-semibold">Rol:</label>
-            <p className="ml-2">
-              {user.role == "admin" || user.role == "owner"
-                ? "Admistrador"
-                : "Tecnico"}
-            </p>
-          </div>
-        </section>
-      ) : (
-        <UserDesktop user={user} />
-      )}
     </main>
   );
 };
