@@ -51,6 +51,30 @@ export const deleteClient = async (clientNumber) => {
   }
 };
 
+export const updateClient = async (data) => {
+  try {
+    const response = await fetch(
+      `${Global.endpoints.backend}clients/${data.clientNumber}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!response.ok) {
+      console.log("Network response was not ok " + response.statusText);
+    }
+
+    const result = await response.json();
+    return { status: response.status, id: result.id };
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+};
+
 export const useClients = (page, limit) => {
   return useQuery({
     queryKey: ["clients", page, limit],
