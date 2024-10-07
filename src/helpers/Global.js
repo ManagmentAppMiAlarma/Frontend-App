@@ -1,6 +1,6 @@
 export const Global = {
   endpoints: {
-    backend: "http://100.24.18.136:8080/api/",
+    backend: "http://54.82.219.246:8080/api/",
     // backend: "http://localhost:8080/api/",
   },
   actionType: {
