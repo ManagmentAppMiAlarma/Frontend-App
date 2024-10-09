@@ -26,7 +26,7 @@ const Login = () => {
       });
 
       if (res.status !== 201) {
-        console.log(res, dataUser);
+        console.log("Error: ", res.statusText);
       }
 
       const data = await res.json();

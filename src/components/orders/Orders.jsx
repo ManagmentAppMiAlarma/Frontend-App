@@ -6,7 +6,7 @@ import { Global } from "../../helpers/Global";
 import "react-loading-skeleton/dist/skeleton.css";
 import ListOrders from "../listAndTable/ListOrders";
 import NavBack from "../navegation/NavBack";
-import { updateOrders } from "../../hooks";
+import { updateOrders, useAuth } from "../../hooks";
 import { Modal } from "../modal";
 import { toast } from "react-toastify";
 
@@ -43,6 +43,7 @@ const Orders = () => {
     userAssignedDni: "",
     coordinated: false,
   });
+  const { auth } = useAuth();
 
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["orders", formatDate(startDate), formatDate(endDate)],
@@ -50,6 +51,10 @@ const Orders = () => {
       fetchOrdersByDate(formatDate(startDate), formatDate(endDate)),
     enabled: !!startDate && !!endDate,
   });
+
+  const filteredOrders = data?.filter(
+    (order) => order.userAssigned.dni === auth.dni
+  );
 
   const mutation = useMutation({
     mutationFn: (data) => updateOrders(data),
@@ -120,7 +125,7 @@ const Orders = () => {
       <NavBack
         text="Gestion de Ordenes"
         handleOpenModal={handleOpenModalOrders}
-        disable={false}
+        disable={auth.role === "admin" || auth.role === "owner" ? false : true}
       />
       <div className="flex justify-center mt-6">
         <DatePicker
@@ -139,7 +144,14 @@ const Orders = () => {
       {isError ? (
         <div>Ha ocurrido un error: {error.message}</div>
       ) : (
-        <ListOrders isLoading={isLoading} data={data} />
+        <ListOrders
+          isLoading={isLoading}
+          data={
+            auth.role === "admin" || auth.role === "owner"
+              ? data
+              : filteredOrders
+          }
+        />
       )}
       <section>
         <Modal

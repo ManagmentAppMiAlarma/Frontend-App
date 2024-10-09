@@ -44,7 +44,6 @@ export const deleteOrder = async (orderNumber) => {
     if (!response.ok) {
       console.log("Network response was not ok " + response.statusText);
     }
-    console.log(response);
     const result = await response.json();
     return result;
   } catch (error) {
