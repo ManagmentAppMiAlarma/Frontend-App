@@ -1,6 +1,6 @@
 import React from "react";
-import Skeleton from "../loadingSkeleton/Orders";
 import Order from "../cards/Orders";
+import OrderSkeleton from "../loadingSkeleton/Order";
 
 const today = new Date();
 
@@ -10,7 +10,7 @@ const parseDate = (dateStr) => {
 };
 
 const ListOrders = ({ isLoading, data }) => {
-  const ordersArray = isLoading ? null : Array.from(data.ordenes);
+  const ordersArray = isLoading ? null : Array.from(data);
 
   const sortedOrders = isLoading
     ? null
@@ -27,10 +27,10 @@ const ListOrders = ({ isLoading, data }) => {
       </h1>
       {isLoading ? (
         // Mostrar el Skeleton mientras se cargan los datos
-        <ul>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(4)].map((_, index) => (
             <li key={index}>
-              <Skeleton />
+              <OrderSkeleton />
             </li>
           ))}
         </ul>

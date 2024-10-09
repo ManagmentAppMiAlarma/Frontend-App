@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Global } from "../helpers";
 
 const fetchClients = async (page = 1, limit = 10) => {
@@ -9,6 +9,21 @@ const fetchClients = async (page = 1, limit = 10) => {
     throw new Error("Error fetching clients");
   }
   return response.json();
+};
+
+export const fetchClientsById = async (clientNumber) => {
+  try {
+    const response = await fetch(
+      `${Global.endpoints.backend}clients/${clientNumber}`
+    );
+    if (!response.ok) {
+      throw new Error("Error fetching clients");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation: ", error);
+  }
 };
 
 export const updateClients = async (data) => {
@@ -53,16 +68,13 @@ export const deleteClient = async (clientNumber) => {
 
 export const updateClient = async (data) => {
   try {
-    const response = await fetch(
-      `${Global.endpoints.backend}clients/${data.clientNumber}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const response = await fetch(`${Global.endpoints.backend}clients/${data}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
     if (!response.ok) {
       console.log("Network response was not ok " + response.statusText);
@@ -80,9 +92,6 @@ export const useClients = (page, limit) => {
     queryKey: ["clients", page, limit],
     queryFn: () => fetchClients(page, limit),
     keepPreviousData: true,
+    staleTime: 5 * 60 * 1000,
   });
-};
-
-export const useMutateAddClients = () => {
-  return useMutation(updateClients);
 };

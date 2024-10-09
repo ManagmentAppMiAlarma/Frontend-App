@@ -7,129 +7,46 @@ const Profile = () => {
   const { firstname, lastname, dni, email, role, phone } = auth;
   return (
     <main>
-      <form>
-        <div className="text-center my-4">
-          <UserCircleIcon
-            aria-hidden="true"
-            className="h-16 w-16 text-gray-300 mx-auto"
-          />
-          <h1>{firstname}</h1>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-8 mx-4 px-4 pt-3">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Información Personal
-          </h2>
-
-          <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="first-name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Nombre
-              </label>
-              <div className="mt-1">
-                <input
-                  id="first-name"
-                  name="first-name"
-                  type="text"
-                  placeholder={firstname}
-                  autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
-                />
+      <div className="min-h-screen bg-white flex justify-center p-2.5">
+        <div className="relative bg-white rounded-3xl shadow-lg overflow-hidden max-w-2xl w-full max-h-fit">
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gray-100 rounded-t-3xl"></div>
+          <div className="relative p-3">
+            <div className="flex flex-col sm:flex-row items-center mb-3">
+              <img
+                className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md mb-4 sm:mb-0 sm:mr-6"
+                src={`https://ui-avatars.com/api/?name=${firstname}+${lastname}&size=128&background=e5e7eb&color=4f46e5`}
+                alt={`${firstname} ${lastname}`}
+              />
+              <div className="text-center sm:text-left">
+                <h1 className="text-3xl font-bold text-gray-800">{`${firstname} ${lastname}`}</h1>
+                <p className="text-indigo-600 font-medium text-lg">
+                  {role == "owner" || role == "admin"
+                    ? "Administrador"
+                    : "Técnico"}
+                </p>
               </div>
             </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="last-name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Apellido
-              </label>
-              <div className="mt-1">
-                <input
-                  id="last-name"
-                  name="last-name"
-                  type="text"
-                  placeholder={lastname}
-                  autoComplete="family-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder={email}
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Celular
-              </label>
-              <div className="mt-1">
-                <input
-                  id="phone"
-                  name="phone"
-                  type="phone"
-                  placeholder={phone}
-                  autoComplete="phone"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="dni"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                {`Cédula de Identidad: ${dni}`}
-              </label>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="role"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                {`Role: ${
-                  role == "owner" || role == "admin"
-                    ? "Administrativo"
-                    : "Técnico"
-                }`}
-              </label>
+            <div className="space-y-4 bg-gray-50 rounded-2xl p-3 shadow-inner">
+              <InfoItem icon="📱" label="Teléfono" value={phone} />
+              <InfoItem icon="✉️" label="Email" value={email} />
+              <InfoItem icon="🆔" label="DNI" value={dni} />
             </div>
           </div>
         </div>
-
-        <div className="mt-9 flex items-center justify-center gap-x-14">
-          <button
-            type="submit"
-            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 mb-12"
-          >
-            Actualizar Datos
-          </button>
-        </div>
-      </form>
+      </div>
     </main>
   );
 };
 
+function InfoItem({ icon, label, value }) {
+  return (
+    <div className="flex items-center bg-white rounded-lg p-2 shadow-sm">
+      <span className="text-xl mr-4">{icon}</span>
+      <div>
+        <p className="text-sm text-gray-500 font-medium">{label}</p>
+        <p className="text-gray-800">{value}</p>
+      </div>
+    </div>
+  );
+}
 export default Profile;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Global } from "../../helpers/Global";
 import "react-loading-skeleton/dist/skeleton.css";
 import ListOrders from "../listAndTable/ListOrders";
@@ -17,14 +17,13 @@ const fetchOrdersByDate = async (startDate, endDate) => {
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
+
   const data = await response.json();
-  return {
-    ordenes: data,
-  };
+  return data;
 };
 
 const formatDate = (date) => {
-  if (!date) return ""; // Manejar el caso en que la fecha sea null o undefined
+  if (!date) return "";
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
@@ -32,26 +31,10 @@ const formatDate = (date) => {
 };
 
 const Orders = () => {
+  const queryClient = useQueryClient();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  // Usar useQuery con la nueva forma de pasar los argumentos
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["orders", formatDate(startDate), formatDate(endDate)],
-    queryFn: () =>
-      fetchOrdersByDate(formatDate(startDate), formatDate(endDate)),
-    enabled: !!startDate && !!endDate, // Solo fetch cuando ambas fechas están definidas
-  });
-
   const [isOpenCreateOrdersModal, setIsOpenCreateOrdersModal] = useState(false);
-
-  const handleOpenModalOrders = () => {
-    setIsOpenCreateOrdersModal(true);
-  };
-  const handleCloseModalOrders = () => {
-    setIsOpenCreateOrdersModal(false);
-  };
-
   const [orderData, setOrderData] = useState({
     orderNumber: "",
     dateOfOrder: "",
@@ -61,24 +44,32 @@ const Orders = () => {
     coordinated: false,
   });
 
-  const [response, setResponse] = useState("");
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["orders", formatDate(startDate), formatDate(endDate)],
+    queryFn: () =>
+      fetchOrdersByDate(formatDate(startDate), formatDate(endDate)),
+    enabled: !!startDate && !!endDate,
+  });
 
-  const handleAddOrders = async (e) => {
-    e?.preventDefault();
-    const body = {
-      ...orderData,
-    };
-    const response = await updateOrders(body);
-    setResponse(response);
-    if (response.statusCode == 400 || response.statusCode == 404)
-      return toast.error(
-        response.message == "Order already exists"
-          ? "La Orden ya existe"
-          : "Error al crear la Orden"
-      );
-    handleCloseModalOrders();
-    toast.success("Orden creada correctamente");
-  };
+  const mutation = useMutation({
+    mutationFn: (data) => updateOrders(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries([
+        "orders",
+        formatDate(startDate),
+        formatDate(endDate),
+      ]);
+      toast.success("Orden creada correctamente");
+      handleCloseModalOrders();
+      handlerCleanForm();
+    },
+    onError: (error) => {
+      toast.error("Error al crear la orden: " + error.message);
+    },
+  });
+
+  const handleOpenModalOrders = () => setIsOpenCreateOrdersModal(true);
+  const handleCloseModalOrders = () => setIsOpenCreateOrdersModal(false);
 
   const handlerCleanForm = () => {
     setOrderData({
@@ -97,6 +88,31 @@ const Orders = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handleAddOrders = (e) => {
+    e.preventDefault();
+    const {
+      orderNumber,
+      dateOfOrder,
+      clientNumber,
+      taskDescription,
+      userAssignedDni,
+    } = orderData;
+
+    // Validaciones
+    if (
+      !orderNumber ||
+      !dateOfOrder ||
+      !clientNumber ||
+      !taskDescription ||
+      !userAssignedDni
+    ) {
+      toast.error("Por favor, complete todos los campos.");
+      return;
+    }
+
+    mutation.mutate(orderData);
   };
 
   return (
@@ -121,7 +137,7 @@ const Orders = () => {
         />
       </div>
       {isError ? (
-        <div>Ah ocurrido un error: {error.message}</div>
+        <div>Ha ocurrido un error: {error.message}</div>
       ) : (
         <ListOrders isLoading={isLoading} data={data} />
       )}
@@ -224,15 +240,6 @@ const Orders = () => {
               />{" "}
               Coordinado
             </label>
-            {response.message && (
-              <ul>
-                <li>{response.message[0]}</li>
-                <li>{response.message[1]}</li>
-                <li>{response.message[2]}</li>
-                <li>{response.message[3]}</li>
-                <li>{response.message[4]}</li>
-              </ul>
-            )}
           </form>
         </Modal>
       </section>

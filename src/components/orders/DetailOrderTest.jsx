@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 
 const DetailOrderTest = ({ order }) => {
+  const encodedAddress = encodeURIComponent(order.client.address);
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8 rounded-xl shadow-lg max-w-4xl mx-3 sm:mx-auto mt-4 sm:mt-6 md:mt-10 overflow-hidden">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6">
@@ -41,12 +42,19 @@ const DetailOrderTest = ({ order }) => {
             </p>
           </div>
           <div className="col-span-1 sm:col-span-2">
-            <p className="text-sm font-medium text-gray-500 flex items-center">
-              <MapPinIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1" /> Dirección
-            </p>
-            <p className="text-sm sm:text-base text-gray-700">
-              {order.client.address}
-            </p>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p className="text-sm font-medium text-gray-500 flex items-center">
+                <MapPinIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1 text-red-600" />{" "}
+                Dirección
+              </p>
+              <p className="text-sm sm:text-base text-gray-700">
+                {order.client.address}
+              </p>
+            </a>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-500 flex items-center">

@@ -5,18 +5,28 @@ import Table from "../listAndTable/Table";
 import { updateClients, useClients } from "../../hooks";
 import { toast } from "react-toastify";
 import { Modal } from "../modal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Global, paymentMethodType } from "../../helpers";
+import { PuffLoader } from "react-spinners";
 
 const Clients = () => {
   const [page, setPage] = useState(1);
   const [isOpenCreateClientsModal, setIsOpenCreateClientsModal] =
     useState(false);
-  const [checked, setChecked] = useState(true);
-  const limit = 10;
-
-  const { data, isLoading, isError } = useClients(page, limit);
-
-  const totalPages = data ? data?.meta.lastPage : 1;
+  const [clientData, setClientData] = useState({
+    clientNumber: "",
+    customerNumber: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    address: "",
+    customer: true,
+    amount: 0,
+    paymentMethod: "",
+  });
+  const [limit, setLimit] = useState(10);
+  const queryClient = useQueryClient();
 
   const columns = [
     {
@@ -59,38 +69,34 @@ const Clients = () => {
       accessorFn: (row) => row.email || "Sin correo",
     },
   ];
+  const { data, isLoading, isError } = useClients(page, limit);
+
+  const mutation = useMutation({
+    mutationFn: (data) => updateClients(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["clients"]);
+      handleCloseModalClients();
+      toast.success("Cliente creado correctamente");
+    },
+    onError: () => {
+      toast.error("Error al crear el cliente");
+    },
+  });
+
+  // Manejo de estado y funciones
+  const totalPages = data ? data.meta.lastPage : 1;
 
   const handleOpenModalClients = () => {
     setIsOpenCreateClientsModal(true);
   };
+
   const handleCloseModalClients = () => {
     setIsOpenCreateClientsModal(false);
   };
 
-  const [clientData, setClientData] = useState({
-    clientNumber: "",
-    customerNumber: "",
-    firstname: "",
-    lastname: "",
-    email: "",
-    phone: "",
-    address: "",
-    customer: true,
-    amount: 0,
-    paymentMethod: "",
-  });
-
   const handleAddClient = async (e) => {
-    e?.preventDefault();
-    const body = {
-      ...clientData,
-    };
-    console.log(body);
-    const response = await updateClients(body);
-    console.log(response);
-    if (!response.id) return toast.error("Error al crear el cliente");
-    handleCloseModalClients();
-    toast.success("Cliente creado correctamente");
+    e.preventDefault();
+    mutation.mutate(clientData);
   };
 
   const handlerCleanForm = () => {
@@ -110,12 +116,17 @@ const Clients = () => {
 
   const updateClientData = (e) => {
     const { name, value, type, checked } = e.target;
-    setChecked(checked);
     setClientData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  const handleLimitChange = (newLimit) => {
+    setLimit(newLimit);
+    setPage(1);
+  };
+
   return (
     <main className="min-h-screen">
       <NavBack
@@ -142,6 +153,8 @@ const Clients = () => {
             setPage={setPage}
             isLoading={isLoading}
             caseFor="clients"
+            handleLimitChange={handleLimitChange}
+            total={data?.meta.totalPages}
           />
           <Modal
             open={isOpenCreateClientsModal}

@@ -1,19 +1,16 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Error404, Login, Dashboard } from "../pages";
-import {
-  ClientsComponent,
-  DetailClient,
-  DetailOrder,
-  Employee,
-  OrdersComponent,
-  PrivateLayout,
-  Profile,
-  PublicLayout,
-  UpdateOrder,
-} from "../components";
 import { Logout } from "../services/Logout";
 import DetailUser from "../components/employee/DetailUser";
+import PublicLayout from "../components/layout/public/PublicLayout";
+import PrivateLayout from "../components/layout/private/PrivateLayout";
+import Orders from "../components/orders/Orders";
+import DetailOrder from "../components/orders/DetailOrder";
+import Profile from "../components/profile/Profile";
+import Clients from "../components/clients/Clients";
+import DetailClient from "../components/clients/DetailClient";
+import Employee from "../components/employee/Employee";
 
 const Routing = () => {
   return (
@@ -26,15 +23,11 @@ const Routing = () => {
 
         <Route path="/inicio" element={<PrivateLayout />}>
           <Route index element={<Dashboard />} />
-          <Route path="ordenes" element={<OrdersComponent />} />
+          <Route path="ordenes" element={<Orders />} />
           <Route path="ordenes/:orderNumber" element={<DetailOrder />} />
-          <Route
-            path="ordenes/:orderNumber/actualizar"
-            element={<UpdateOrder />}
-          />
 
           <Route path="perfil" element={<Profile />} />
-          <Route path="clientes" element={<ClientsComponent />} />
+          <Route path="clientes" element={<Clients />} />
           <Route path="clientes/:clientNumber" element={<DetailClient />} />
 
           <Route path="empleados" element={<Employee />} />

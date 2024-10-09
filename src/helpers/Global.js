@@ -10,7 +10,7 @@ export const Global = {
     SET_ORDERS_LOADING: "SET_ORDERS_LOADING",
   },
   images: {
-    logo: "icon512_maskable.png",
+    logo: "/icon512_maskable.png",
   },
   typesMethodList: {
     CASH: "CASH",
