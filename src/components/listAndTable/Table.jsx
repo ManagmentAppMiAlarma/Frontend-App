@@ -4,7 +4,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Link, useLocation } from "react-router-dom";
-import { PuffLoader } from "react-spinners";
+import PuffLoaderComponent from "../loadingComponent/PuffLoader";
 
 const Table = ({ columns, content, isLoading, caseFor, handleLimitChange }) => {
   const location = useLocation();
@@ -48,9 +48,7 @@ const Table = ({ columns, content, isLoading, caseFor, handleLimitChange }) => {
         </div>
       </div>
       {isLoading ? (
-        <div className="flex justify-center items-center min-h-[420px]">
-          <PuffLoader color={"#dc2626"} loading={isLoading} size={50} />
-        </div>
+        <PuffLoaderComponent isLoading={isLoading} />
       ) : (
         <div className="overflow-x-auto shadow-lg rounded-lg">
           <table className="w-full bg-white">

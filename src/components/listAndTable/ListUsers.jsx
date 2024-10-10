@@ -1,19 +1,12 @@
 import React from "react";
-import Skeleton from "../loadingSkeleton/Users";
 import User from "../cards/User";
+import PuffLoaderComponent from "../loadingComponent/PuffLoader";
 
 const ListUsers = ({ totalPages, page, setPage, isLoading, data }) => {
   return (
     <section className="container mx-auto mt-8 px-2 sm:hidden">
       {isLoading ? (
-        // Mostrar el Skeleton mientras se cargan los datos
-        <ul>
-          {[...Array(4)].map((_, index) => (
-            <li key={index}>
-              <Skeleton />
-            </li>
-          ))}
-        </ul>
+        <PuffLoaderComponent isLoading={isLoading} />
       ) : (
         // Mostrar los datos cuando se hayan cargado
         data?.data?.map((user) => <User user={user} key={user.id} />)

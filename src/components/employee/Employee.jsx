@@ -105,12 +105,7 @@ const Employee = () => {
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="mb-5 sm:min-h-screen"
-    >
+    <main className="mb-5 sm:min-h-screen">
       <NavBack
         text="Gestion de Empleados"
         handleOpenModal={handleOpenModalUser}
@@ -176,7 +171,7 @@ const Employee = () => {
           >
             <form
               onSubmit={handleAddUsers}
-              className="space-y-3 bg-gray-900 shadow-2xl rounded-3xl p-8 sm:p-10"
+              className="space-y-2 bg-gray-900 p-8 sm:p-10"
             >
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 {[
@@ -290,7 +285,7 @@ const Employee = () => {
           </Modal>
         </>
       )}
-    </motion.main>
+    </main>
   );
 };
 

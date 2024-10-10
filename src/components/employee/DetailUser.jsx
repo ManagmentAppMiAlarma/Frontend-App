@@ -5,9 +5,9 @@ import NavBack from "../navegation/NavBack";
 import DeleteModal from "../modal/DeleteModal";
 import { deleteUser } from "../../hooks";
 import { toast } from "react-toastify";
-import Skeleton from "../loadingSkeleton/Clients";
 import UserDesktop from "../cards/UserDesktop";
 import User from "../cards/User";
+import PuffLoaderComponent from "../loadingComponent/PuffLoader";
 
 function debounce(func, wait) {
   let timeout;
@@ -66,7 +66,7 @@ const DetailUser = () => {
         disable={true}
       />
       {loading ? (
-        <Skeleton />
+        <PuffLoaderComponent isLoading={loading} />
       ) : isMobileView ? (
         <User user={user} link={false} />
       ) : (

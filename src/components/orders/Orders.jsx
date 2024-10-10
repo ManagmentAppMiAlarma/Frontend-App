@@ -130,12 +130,7 @@ const Orders = () => {
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen"
-    >
+    <main className="min-h-screen">
       <NavBack
         text="Gestion de Ordenes"
         handleOpenModal={handleOpenModalOrders}
@@ -212,10 +207,7 @@ const Orders = () => {
               </motion.button>
             }
           >
-            <form
-              onSubmit={handleAddOrders}
-              className="mt-8 space-y-3 shadow-2xl rounded-3xl p-8 sm:p-10"
-            >
+            <form onSubmit={handleAddOrders} className="space-y-2 p-8 sm:p-10">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 {[
                   {
@@ -335,7 +327,7 @@ const Orders = () => {
           </Modal>
         )}
       </section>
-    </motion.main>
+    </main>
   );
 };
 

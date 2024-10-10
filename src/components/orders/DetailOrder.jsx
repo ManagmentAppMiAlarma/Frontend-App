@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import NavBack from "../navegation/NavBack";
-import Skeleton from "../loadingSkeleton/D&UOrders";
 import DetailOrderTest from "./DetailOrderTest";
 import { Modal } from "../modal";
 import DeleteModal from "../modal/DeleteModal";
@@ -18,6 +17,7 @@ import {
   FaRegFileAlt,
   FaRegCheckCircle,
 } from "react-icons/fa";
+import PuffLoaderComponent from "../loadingComponent/PuffLoader";
 
 const DetailOrder = () => {
   const { orderNumber } = useParams();
@@ -124,7 +124,11 @@ const DetailOrder = () => {
         valueKey={isLoading ? null : data.orderNumber}
         disable={true}
       />
-      {isLoading ? <Skeleton /> : <DetailOrderTest order={data} />}
+      {isLoading ? (
+        <PuffLoaderComponent isLoading={isLoading} />
+      ) : (
+        <DetailOrderTest order={data} />
+      )}
       {isLoading ? null : (
         <Modal
           open={isOpenUpdateOrdersModal}

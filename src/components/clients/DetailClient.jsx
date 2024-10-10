@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import Client from "../cards/Client";
 import NavBack from "../navegation/NavBack";
 import DeleteModal from "../modal/DeleteModal";
-import Skeleton from "../loadingSkeleton/Clients";
 import ClientDesktop from "../cards/ClientDesktop";
 import { Modal, MsgError, MsgSuccess } from "../modal";
 import {
@@ -17,8 +16,6 @@ import {
   FaCreditCard,
   FaRegIdCard,
   FaMoneyBillWave,
-  FaArrowLeft,
-  FaArrowRight,
 } from "react-icons/fa";
 import {
   deleteClient,
@@ -26,6 +23,7 @@ import {
   updateClient,
   useForm,
 } from "../../hooks";
+import PuffLoaderComponent from "../loadingComponent/PuffLoader";
 
 const DetailClient = () => {
   const { clientNumber } = useParams();
@@ -106,8 +104,6 @@ const DetailClient = () => {
     handleCloseModalClients();
   };
 
-  console.log(form.customer);
-
   return (
     <main className="min-h-screen">
       <NavBack
@@ -117,7 +113,7 @@ const DetailClient = () => {
         valueKey={clientNumber}
       />
       {isLoading ? (
-        <Skeleton />
+        <PuffLoaderComponent isLoading={isLoading} />
       ) : (
         <>
           {isMobileView ? (
@@ -154,7 +150,7 @@ const DetailClient = () => {
             >
               <form
                 onSubmit={updateClientData}
-                className="space-y-2 shadow-2xl rounded-3xl p-8 sm:p-10"
+                className="space-y-2 p-8 sm:p-10"
               >
                 <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                   {[
@@ -283,7 +279,7 @@ const DetailClient = () => {
                         label: "Monto Mensual",
                         icon: FaMoneyBillWave,
                         placeholder: "Ingrese el monto",
-                        type: "number",
+                        type: "string",
                       },
                     ].map((field) => (
                       <div key={field.id} className="relative group">

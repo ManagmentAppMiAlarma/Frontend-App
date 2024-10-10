@@ -1,6 +1,6 @@
 import React from "react";
 import Order from "../cards/Orders";
-import OrderSkeleton from "../loadingSkeleton/Order";
+import PuffLoaderComponent from "../loadingComponent/PuffLoader";
 
 const today = new Date();
 
@@ -26,14 +26,7 @@ const ListOrders = ({ isLoading, data }) => {
         Órdenes de Trabajo
       </h1>
       {isLoading ? (
-        // Mostrar el Skeleton mientras se cargan los datos
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(4)].map((_, index) => (
-            <li key={index}>
-              <OrderSkeleton />
-            </li>
-          ))}
-        </ul>
+        <PuffLoaderComponent isLoading={isLoading} />
       ) : ordersArray.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedOrders.map((order) => {

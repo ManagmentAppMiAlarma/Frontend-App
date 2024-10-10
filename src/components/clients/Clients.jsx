@@ -140,12 +140,7 @@ const Clients = () => {
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen"
-    >
+    <main className="min-h-screen">
       <NavBack
         text="Gestion de Clientes"
         handleOpenModal={handleOpenModalClients}
@@ -229,7 +224,9 @@ const Clients = () => {
             title={"Crear Cliente"}
             size={"md"}
             footerChild={
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={handleAddClient}
                 className="group relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
               >
@@ -240,13 +237,10 @@ const Clients = () => {
                   />
                 </span>
                 Crear Cliente
-              </button>
+              </motion.button>
             }
           >
-            <form
-              onSubmit={handleAddClient}
-              className="space-y-2 shadow-2xl rounded-3xl p-8 sm:p-10"
-            >
+            <form onSubmit={handleAddClient} className="space-y-2 p-8 sm:p-10">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 {[
                   {
@@ -285,8 +279,14 @@ const Clients = () => {
                     icon: FaMapMarkerAlt,
                     placeholder: "Ingrese la dirección",
                   },
-                ].map((field) => (
-                  <div key={field.id} className="relative group">
+                ].map((field, index) => (
+                  <motion.div
+                    key={field.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="relative group"
+                  >
                     <label
                       htmlFor={field.id}
                       className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
@@ -311,11 +311,16 @@ const Clients = () => {
                         onChange={updateClientData}
                       />
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
-              <div className="flex items-center pt-2.5">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex items-center pt-2.5"
+              >
                 <input
                   id="customer"
                   name="customer"
@@ -330,7 +335,7 @@ const Clients = () => {
                 >
                   ¿Es Abonado?
                 </label>
-              </div>
+              </motion.div>
 
               {clientData.customer && (
                 <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
@@ -341,7 +346,12 @@ const Clients = () => {
                     >
                       Forma de Pago
                     </label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="mt-1 relative rounded-md shadow-sm"
+                    >
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <FaCreditCard
                           className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400"
@@ -362,7 +372,7 @@ const Clients = () => {
                         <option value="OCA">Oca</option>
                         <option value="TRANSFER">Transferencia</option>
                       </select>
-                    </div>
+                    </motion.div>
                   </div>
 
                   {[
@@ -379,8 +389,14 @@ const Clients = () => {
                       placeholder: "Ingrese el monto",
                       type: "number",
                     },
-                  ].map((field) => (
-                    <div key={field.id} className="relative group">
+                  ].map((field, index) => (
+                    <div
+                      key={field.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="relative group"
+                    >
                       <label
                         htmlFor={field.id}
                         className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
@@ -412,7 +428,7 @@ const Clients = () => {
           </Modal>
         </>
       )}
-    </motion.main>
+    </main>
   );
 };
 
