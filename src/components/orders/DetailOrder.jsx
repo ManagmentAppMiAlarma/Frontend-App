@@ -9,6 +9,15 @@ import { Modal } from "../modal";
 import DeleteModal from "../modal/DeleteModal";
 import { getOrderByOrderNumber } from "../../services/getOrderByOrderNumber";
 import { deleteOrder, updatingOrder } from "../../hooks";
+import { motion } from "framer-motion";
+import {
+  FaRegClipboard,
+  FaRegCalendarAlt,
+  FaRegBuilding,
+  FaRegUserCircle,
+  FaRegFileAlt,
+  FaRegCheckCircle,
+} from "react-icons/fa";
 
 const DetailOrder = () => {
   const { orderNumber } = useParams();
@@ -124,101 +133,141 @@ const DetailOrder = () => {
           title={"Actualizar Orden"}
           size={"md"}
           footerChild={
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={handleAddOrder}
-              className="w-full lg:w-[unset] flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              className="group relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
             >
-              Actualizar Orden
-            </button>
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                <FaRegCheckCircle
+                  className="h-5 w-5 text-red-500 group-hover:text-red-400"
+                  aria-hidden="true"
+                />
+              </span>
+              Crear Orden
+            </motion.button>
           }
         >
           <form
             onSubmit={handleAddOrder}
-            className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pt-1 pb-4 sm:text-sm sm:mt-4"
+            className="mt-8 space-y-3 shadow-2xl rounded-3xl p-8 sm:p-10"
           >
-            <label htmlFor="orderNumber" className="flex flex-col gap-2">
-              Número de Orden:
-              <input
-                id="orderNumber"
-                name="orderNumber"
-                placeholder={data.orderNumber}
-                type="text"
-                required
-                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                value={orderData.orderNumber}
-                onChange={updateOrderData}
-              />
-            </label>
+            <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+              {[
+                {
+                  id: "orderNumber",
+                  label: "Número de Orden",
+                  icon: FaRegClipboard,
+                  placeholder: "Ej: 01120824",
+                },
+                {
+                  id: "dateOfOrder",
+                  label: "Fecha de Orden",
+                  icon: FaRegCalendarAlt,
+                  placeholder: "dd/mm/yyyy",
+                },
+                {
+                  id: "clientNumber",
+                  label: "Número de Cliente",
+                  icon: FaRegBuilding,
+                  placeholder: "Ej: C129",
+                },
+                {
+                  id: "userAssignedDni",
+                  label: "DNI del Usuario Asignado",
+                  icon: FaRegUserCircle,
+                  placeholder: "Ej: 12345678",
+                },
+              ].map((field, index) => (
+                <motion.div
+                  key={field.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="relative group"
+                >
+                  <label
+                    htmlFor={field.id}
+                    className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
+                  >
+                    {field.label}
+                  </label>
+                  <div className="mt-1 relative rounded-md shadow-sm">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <field.icon
+                        className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <input
+                      id={field.id}
+                      name={field.id}
+                      type="text"
+                      required
+                      className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                      placeholder={field.placeholder}
+                      value={orderData[field.id]}
+                      onChange={updateOrderData}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
 
-            <label htmlFor="dateOfOrder" className="flex flex-col gap-2">
-              Fecha de Orden:
-              <input
-                id="dateOfOrder"
-                name="dateOfOrder"
-                placeholder={data.dateOfOrder}
-                type="text"
-                required
-                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                value={orderData.dateOfOrder}
-                onChange={updateOrderData}
-              />
-            </label>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="relative group"
+            >
+              <label
+                htmlFor="taskDescription"
+                className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
+              >
+                Descripción de la Tarea
+              </label>
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="absolute top-3 left-3 flex items-center pointer-events-none">
+                  <FaRegFileAlt
+                    className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400"
+                    aria-hidden="true"
+                  />
+                </div>
+                <textarea
+                  id="taskDescription"
+                  name="taskDescription"
+                  rows="4"
+                  required
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                  placeholder="Describa la tarea en detalle..."
+                  value={orderData.taskDescription}
+                  onChange={updateOrderData}
+                ></textarea>
+              </div>
+            </motion.div>
 
-            <label htmlFor="clientNumber" className="flex flex-col gap-2">
-              Número de Cliente:
-              <input
-                id="clientNumber"
-                name="clientNumber"
-                placeholder={data.client.clientNumber}
-                type="text"
-                required
-                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                value={orderData.clientNumber}
-                onChange={updateOrderData}
-              />
-            </label>
-
-            <label htmlFor="userAssignedDni" className="flex flex-col gap-2">
-              DNI del Usuario Asignado:
-              <input
-                id="userAssignedDni"
-                name="userAssignedDni"
-                placeholder={data.userAssigned.dni}
-                type="text"
-                required
-                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                value={orderData.userAssignedDni}
-                onChange={updateOrderData}
-              />
-            </label>
-            <label htmlFor="taskDescription" className="flex flex-col gap-2">
-              Descripción de la Tarea:
-              <textarea
-                id="taskDescription"
-                name="taskDescription"
-                placeholder={data.taskDescription}
-                rows="3"
-                required
-                className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-24 resize-none"
-                value={orderData.taskDescription}
-                onChange={updateOrderData}
-              ></textarea>
-            </label>
-
-            <label
-              htmlFor="coordinated"
-              className="flex items-center gap-2 sm:col-span-2"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="flex items-center"
             >
               <input
                 id="coordinated"
                 name="coordinated"
                 type="checkbox"
-                className="border border-gray-300 rounded-lg p-2 sm:border-gray-400 sm:rounded-xl"
+                className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-700 rounded bg-gray-800"
                 checked={orderData.coordinated}
                 onChange={updateOrderData}
-              />{" "}
-              Coordinado
-            </label>
+              />
+              <label
+                htmlFor="coordinated"
+                className="ml-2 block text-sm text-gray-400 hover:text-red-400 transition-colors"
+              >
+                Coordinado
+              </label>
+            </motion.div>
           </form>
         </Modal>
       )}

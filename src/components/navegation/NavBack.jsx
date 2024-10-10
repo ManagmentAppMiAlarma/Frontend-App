@@ -13,7 +13,7 @@ const NavBack = ({
   const { role } = auth;
 
   return (
-    <div className="border-b flex py-4 px-2 mb-2 justify-center gap-11">
+    <div className="border-b border-gray-900 flex py-4 px-2 mb-2 justify-center gap-11">
       <button onClick={BackTo} className="ml-2 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"

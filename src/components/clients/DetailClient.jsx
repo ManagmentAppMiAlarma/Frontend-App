@@ -9,6 +9,18 @@ import Skeleton from "../loadingSkeleton/Clients";
 import ClientDesktop from "../cards/ClientDesktop";
 import { Modal, MsgError, MsgSuccess } from "../modal";
 import {
+  FaRegAddressCard,
+  FaRegUser,
+  FaRegEnvelope,
+  FaPhoneAlt,
+  FaMapMarkerAlt,
+  FaCreditCard,
+  FaRegIdCard,
+  FaMoneyBillWave,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa";
+import {
   deleteClient,
   fetchClientsById,
   updateClient,
@@ -94,6 +106,8 @@ const DetailClient = () => {
     handleCloseModalClients();
   };
 
+  console.log(form.customer);
+
   return (
     <main className="min-h-screen">
       <NavBack
@@ -126,132 +140,179 @@ const DetailClient = () => {
               footerChild={
                 <button
                   onClick={updateClientData}
-                  className="w-full lg:w-[unset] bg-red-500 hover:bg-red-700 transition text-white rounded-lg p-2"
+                  className="group relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
                 >
-                  Actualizar
+                  <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <FaRegAddressCard
+                      className="h-5 w-5 text-red-500 group-hover:text-red-400"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  Actualizar Cliente
                 </button>
               }
             >
-              <form onSubmit={updateClientData}>
-                <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pt-1 sm:text-sm sm:mt-4">
-                  <label className="flex flex-col gap-2">
-                    Numero de Cliente:
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="clientNumber"
-                      placeholder={client.clientNumber}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
+              <form
+                onSubmit={updateClientData}
+                className="space-y-2 shadow-2xl rounded-3xl p-8 sm:p-10"
+              >
+                <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                  {[
+                    {
+                      id: "clientNumber",
+                      label: "Número de Cliente",
+                      icon: FaRegAddressCard,
+                      placeholder: "Ej: CLI-001",
+                    },
+                    {
+                      id: "firstname",
+                      label: "Nombre",
+                      icon: FaRegUser,
+                      placeholder: client.firstname,
+                    },
+                    {
+                      id: "lastname",
+                      label: "Apellido",
+                      icon: FaRegUser,
+                      placeholder: client.lastname,
+                    },
+                    {
+                      id: "email",
+                      label: "Email (Opcional)",
+                      icon: FaRegEnvelope,
+                      placeholder: client.email,
+                    },
+                    {
+                      id: "phone",
+                      label: "Teléfono",
+                      icon: FaPhoneAlt,
+                      placeholder: client.phone,
+                    },
+                    {
+                      id: "address",
+                      label: "Dirección",
+                      icon: FaMapMarkerAlt,
+                      placeholder: client.address,
+                    },
+                  ].map((field) => (
+                    <div key={field.id} className="relative group">
+                      <label
+                        htmlFor={field.id}
+                        className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
+                      >
+                        {field.label}
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <field.icon
+                            className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <input
+                          id={field.id}
+                          name={field.id}
+                          type="text"
+                          required={field.id !== "email"}
+                          className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                          placeholder={field.placeholder}
+                          onChange={changed}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-                  <label className="flex flex-col gap-2">
-                    Nombre:
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="firstname"
-                      placeholder={client.firstname}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    Apellido:
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="lastname"
-                      placeholder={client.lastname}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    Email: (Opcional)
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="email"
-                      placeholder={client.email}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    Telefono:
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="phone"
-                      placeholder={client.phone}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    Direccion:
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="address"
-                      placeholder={client.address}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
+                <div className="flex items-center pt-2.5">
+                  <input
+                    id="customer"
+                    name="customer"
+                    type="checkbox"
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-700 rounded bg-gray-800"
+                    onChange={changed}
+                  />
                   <label
-                    htmlFor="coordinated"
-                    className="flex items-center gap-2 sm:col-span-2"
+                    htmlFor="customer"
+                    className="ml-2 block text-sm text-gray-400 hover:text-red-400 transition-colors"
                   >
-                    Es Abonado?{" "}
-                    <input
-                      id="customer"
-                      name="customer"
-                      type="checkbox"
-                      className="border border-gray-300 rounded-lg p-2 sm:border-gray-400 sm:rounded-xl"
-                      onChange={changed}
-                    />
+                    ¿Es Abonado?
                   </label>
                 </div>
-                <div
-                  className={
-                    "flex flex-col sm:grid sm:grid-cols-2 gap-4 pb-4 sm:text-sm sm:mt-4"
-                  }
-                >
-                  <label className="flex flex-col gap-2">
-                    Forma de Pago:
-                    <select
-                      id="paymentMethod"
-                      name="paymentMethod"
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                      placeholder={client.paymentMethod}
-                      onChange={changed}
-                    >
-                      <option value="">Seleccione una Forma de Pago</option>
-                      <option value="CASH">Efectivo</option>
-                      <option value="VISA">Visa</option>
-                      <option value="MASTERCARD">MasterCard</option>
-                      <option value="OCA">Oca</option>
-                      <option value="TRANSFER">Transferencia</option>
-                    </select>
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    Numero de Abonado:
-                    <input
-                      onChange={changed}
-                      type="text"
-                      name="customerNumber"
-                      placeholder={client.customerNumber}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    Monto Mensual:
-                    <input
-                      onChange={changed}
-                      type="number"
-                      name="amount"
-                      placeholder={client.amount}
-                      className="border border-gray-300 rounded-lg p-2 sm:w-72 sm:border-gray-400 sm:rounded-xl sm:h-9"
-                    />
-                  </label>
-                </div>
+
+                {client.customer && form.customer && (
+                  <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                    <div className="relative group">
+                      <label
+                        htmlFor="paymentMethod"
+                        className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
+                      >
+                        Forma de Pago
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <FaCreditCard
+                            className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <select
+                          id="paymentMethod"
+                          name="paymentMethod"
+                          className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                          onChange={changed}
+                        >
+                          <option value="">Seleccione una Forma de Pago</option>
+                          <option value="CASH">Efectivo</option>
+                          <option value="VISA">Visa</option>
+                          <option value="MASTERCARD">MasterCard</option>
+                          <option value="OCA">Oca</option>
+                          <option value="TRANSFER">Transferencia</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {[
+                      {
+                        id: "customerNumber",
+                        label: "Número de Abonado",
+                        icon: FaRegIdCard,
+                        placeholder: "Ej: AB-001",
+                      },
+                      {
+                        id: "amount",
+                        label: "Monto Mensual",
+                        icon: FaMoneyBillWave,
+                        placeholder: "Ingrese el monto",
+                        type: "number",
+                      },
+                    ].map((field) => (
+                      <div key={field.id} className="relative group">
+                        <label
+                          htmlFor={field.id}
+                          className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400"
+                        >
+                          {field.label}
+                        </label>
+                        <div className="mt-1 relative rounded-md shadow-sm">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <field.icon
+                              className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          <input
+                            id={field.id}
+                            name={field.id}
+                            type={field.type || "text"}
+                            className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-300 ease-in-out"
+                            placeholder={field.placeholder}
+                            onChange={changed}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </form>
             </Modal>
 

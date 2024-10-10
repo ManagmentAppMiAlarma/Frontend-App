@@ -11,7 +11,6 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { useAuth } from "../../hooks";
-import { Logout } from "../../services/Logout";
 
 const Header = ({ role }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +66,7 @@ const Header = ({ role }) => {
   };
 
   return (
-    <header className="bg-gray-600 shadow-lg">
+    <header className="bg-gradient-to-r from-gray-700 to-black shadow-lg">
       {role == "admin" || role == "owner" ? (
         <nav className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">

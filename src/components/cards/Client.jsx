@@ -5,11 +5,32 @@ import {
   FaEnvelope,
   FaDollarSign,
   FaCreditCard,
+  FaCrown,
+  FaUser,
 } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Client = ({ client, link = true }) => {
   const location = useLocation();
   const path = location.pathname;
+
+  const getPaymentMethodText = (method) => {
+    switch (method) {
+      case "CASH":
+        return "Efectivo";
+      case "MASTERCARD":
+        return "Mastercard";
+      case "VISA":
+        return "Visa";
+      case "OCA":
+        return "Oca";
+      case "TRANSFER":
+        return "Transferencia";
+      default:
+        return "Sin método de pago";
+    }
+  };
+
   return link ? (
     <Link
       to={
@@ -19,124 +40,186 @@ const Client = ({ client, link = true }) => {
       }
       key={client.id}
     >
-      <div className="mb-5 shadow-lg rounded-2xl max-w-md mx-auto overflow-hidden">
-        <div className="bg-gradient-to-br from-blue-50 via-cyan-100 to-teal-100 p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-5 shadow-2xl rounded-3xl max-w-sm mx-auto overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800"
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="p-6 space-y-4"
+        >
           <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-xl font-bold">
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <h2 className="text-2xl font-bold text-white">
                 {client.firstname} {client.lastname}
               </h2>
-              <p className="text-sm opacity-75">
-                {client.customer
-                  ? `Abonado: ${client.customerNumber}`
-                  : "Cliente"}
+              <p className="text-sm text-gray-400">
+                {client.customer ? (
+                  <span className="flex items-center">
+                    <FaCrown className="text-yellow-400 mr-1" />
+                    Abonado: {client.customerNumber}
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    <FaUser className="text-gray-400 mr-1" />
+                    Cliente
+                  </span>
+                )}
               </p>
-            </div>
-            <span className="bg-white text-red-600 text-sm font-bold px-2 py-1 rounded-full">
+            </motion.div>
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.5, type: "spring" }}
+              className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg"
+            >
               {client.clientNumber}
-            </span>
+            </motion.span>
           </div>
-        </div>
 
-        <div className="p-4 space-y-3">
-          <div className="flex items-center justify-between space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="bg-red-100 p-2 rounded-full">
-                <FaPhone className="text-red-600" />
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center space-x-3 bg-gray-800 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-blue-400 to-blue-600 p-2 rounded-full">
+                <FaPhone className="text-white" />
               </div>
-              <span className="text-gray-700 text-sm">{client.phone}</span>
+              <span className="text-gray-300 text-sm">{client.phone}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="bg-green-100 p-2 rounded-full">
-                <FaMapMarkerAlt className="text-green-600" />
+            <div className="flex items-center space-x-3 bg-gray-800 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-green-400 to-green-600 p-2 rounded-full">
+                <FaMapMarkerAlt className="text-white" />
               </div>
-              <span className="text-gray-700 text-sm">{client.address}</span>
+              <span className="text-gray-300 text-sm">{client.address}</span>
             </div>
-          </div>
-          {client.email && (
-            <div className="flex items-center space-x-2">
-              <div className="bg-blue-100 p-2 rounded-full">
-                <FaEnvelope className="text-blue-600" />
+            {client.email && (
+              <div className="flex items-center space-x-3 bg-gray-800 p-3 rounded-xl">
+                <div className="bg-gradient-to-r from-purple-400 to-purple-600 p-2 rounded-full">
+                  <FaEnvelope className="text-white" />
+                </div>
+                <span className="text-gray-300 text-sm">{client.email}</span>
               </div>
-              <span className="text-gray-700 text-sm">{client.email}</span>
-            </div>
-          )}
-        </div>
-      </div>
+            )}
+          </motion.div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"
+        />
+      </motion.div>
     </Link>
   ) : (
-    <div className="mb-5 shadow-lg rounded-2xl max-w-md mx-4 overflow-hidden">
-      <div className="bg-gradient-to-br from-blue-50 via-cyan-100 to-teal-100 p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="mb-5 shadow-2xl rounded-3xl max-w-sm mx-auto overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800"
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="p-6 space-y-4"
+      >
         <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-bold">
+          <motion.div
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <h2 className="text-2xl font-bold text-white">
               {client.firstname} {client.lastname}
             </h2>
-            <p className="text-sm opacity-75">
-              {client.customer
-                ? `Abonado: ${client.customerNumber}`
-                : "Cliente"}
+            <p className="text-sm text-gray-400">
+              {client.customer ? (
+                <span className="flex items-center">
+                  <FaCrown className="text-yellow-400 mr-1" />
+                  Abonado: {client.customerNumber}
+                </span>
+              ) : (
+                <span className="flex items-center">
+                  <FaUser className="text-gray-400 mr-1" />
+                  Cliente
+                </span>
+              )}
             </p>
-          </div>
-          <span className="bg-white text-red-600 text-sm font-bold px-2 py-1 rounded-full">
+          </motion.div>
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.5, type: "spring" }}
+            className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg"
+          >
             {client.clientNumber}
-          </span>
+          </motion.span>
         </div>
-      </div>
 
-      <div className="p-4 space-y-3">
-        <div className="flex items-center justify-between space-x-4">
-          <div className="flex items-center space-x-2">
-            <div className="bg-red-100 p-2 rounded-full">
-              <FaPhone className="text-red-600" />
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="space-y-3"
+        >
+          <div className="flex items-center space-x-3 bg-gray-800 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-blue-400 to-blue-600 p-2 rounded-full">
+              <FaPhone className="text-white" />
             </div>
-            <span className="text-gray-700 text-sm">{client.phone}</span>
+            <span className="text-gray-300 text-sm">{client.phone}</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <div className="bg-green-100 p-2 rounded-full">
-              <FaMapMarkerAlt className="text-green-600" />
+          <div className="flex items-center space-x-3 bg-gray-800 p-3 rounded-xl">
+            <div className="bg-gradient-to-r from-green-400 to-green-600 p-2 rounded-full">
+              <FaMapMarkerAlt className="text-white" />
             </div>
-            <span className="text-gray-700 text-sm">{client.address}</span>
+            <span className="text-gray-300 text-sm">{client.address}</span>
           </div>
-        </div>
-        {client.email && (
-          <div className="flex items-center space-x-2">
-            <div className="bg-blue-100 p-2 rounded-full">
-              <FaEnvelope className="text-blue-600" />
-            </div>
-            <span className="text-gray-700 text-sm">{client.email}</span>
-          </div>
-        )}
-        {client.customer && (
-          <div className="flex items- justify-around space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="bg-green-100 p-2 rounded-full">
-                <FaDollarSign className="text-green-600" />
+          {client.email && (
+            <div className="flex items-center space-x-3 bg-gray-800 p-3 rounded-xl">
+              <div className="bg-gradient-to-r from-purple-400 to-purple-600 p-2 rounded-full">
+                <FaEnvelope className="text-white" />
               </div>
-              <span className="text-gray-700 text-sm">{client.amount}</span>
+              <span className="text-gray-300 text-sm">{client.email}</span>
             </div>
-            <div className="flex items-center space-x-2 ml-8">
-              <div className="bg-gray-100 p-2 rounded-full">
-                <FaCreditCard className="text-gray-600" />
+          )}
+          {client.customer && (
+            <div className="flex justify-between items-center bg-gray-800 p-3 rounded-xl">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-2 rounded-full">
+                  <FaDollarSign className="text-white" />
+                </div>
+                <span className="text-gray-300 text-sm">{client.amount}</span>
               </div>
-              <span className="text-gray-700 text-sm">
-                {client.paymentMethod == "CASH"
-                  ? client.paymentMethod == "MASTERCARD"
-                    ? client.paymentMethod == "VISA"
-                      ? client.paymentMethod == "OCA"
-                        ? client.paymentMethod == "TRANSFER"
-                          ? "Sin metodo de pago"
-                          : "Efectivo"
-                        : "Mastercard"
-                      : "Visa"
-                    : "Oca"
-                  : "Transferencia"}
-              </span>
+              <div className="flex items-center space-x-3">
+                <div className="bg-gradient-to-r from-indigo-400 to-indigo-600 p-2 rounded-full">
+                  <FaCreditCard className="text-white" />
+                </div>
+                <span className="text-gray-300 text-sm">
+                  {getPaymentMethodText(client.paymentMethod)}
+                </span>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    </div>
+          )}
+        </motion.div>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+        className="h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"
+      />
+    </motion.div>
   );
 };
 

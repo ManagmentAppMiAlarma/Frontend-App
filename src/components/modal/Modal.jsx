@@ -33,13 +33,15 @@ export function Modal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`flex flex-col gap-1 bg-white md:rounded-xl shadow p-4 pt-3 transition-all w-full h-full  ${
+        className={`flex flex-col gap-1 bg-gray-900 md:rounded-xl shadow p-4 pt-3 transition-all w-full h-full  ${
           open ? "scale-100 opacity-100" : "scale-125 opacity-0"
         } ${customSizes[size] ?? customSizes.lg}`}
       >
         <ModalHeader title={title} onClose={onClose} />
         <ModalBody>{children}</ModalBody>
-        {footerChild && <ModalFooter>{footerChild}</ModalFooter>}
+        <div className="flex justify-center">
+          {footerChild && <ModalFooter>{footerChild}</ModalFooter>}
+        </div>
       </div>
     </div>
   );
@@ -48,10 +50,10 @@ export function Modal({
 const ModalHeader = ({ onClose, title }) => {
   return (
     <header className="flex justify-between border-b border-gray-300 pb-2">
-      <h2 className="sm:text-xl">{title}</h2>
+      <h2 className="sm:text-xl text-gray-300 font-semibold">{title}</h2>
       <button
         onClick={onClose}
-        className="rounded-lg text-gray-500 bg-white hover:bg-gray-200 hover:text-gray-700"
+        className="rounded-lg text-gray-500 hover:text-red-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
