@@ -12,6 +12,7 @@ const fetchOrders = async (page = 1, limit = 20) => {
 };
 
 export const updateOrders = async (data) => {
+  console.log(data);
   try {
     const response = await fetch(Global.endpoints.backend + "orders", {
       method: "POST",

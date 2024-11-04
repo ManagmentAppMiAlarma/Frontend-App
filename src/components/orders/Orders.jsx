@@ -19,6 +19,7 @@ import { Modal } from "../modal";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { PuffLoader } from "react-spinners";
+import SearchClients from "../search/SearchClients";
 
 const fetchOrdersByDate = async (startDate, endDate) => {
   const response = await fetch(
@@ -44,6 +45,7 @@ const Orders = () => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [selectedClient, setSelectedClient] = useState(null);
   const [isOpenCreateOrdersModal, setIsOpenCreateOrdersModal] = useState(false);
   const [orderData, setOrderData] = useState({
     orderNumber: "",
@@ -51,7 +53,6 @@ const Orders = () => {
     clientNumber: "",
     taskDescription: "",
     userAssignedDni: "",
-    coordinated: false,
   });
   const { auth } = useAuth();
 
@@ -93,7 +94,6 @@ const Orders = () => {
       clientNumber: "",
       taskDescription: "",
       userAssignedDni: "",
-      coordinated: false,
     });
   };
 
@@ -103,30 +103,30 @@ const Orders = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    console.log(orderData);
   };
 
   const handleAddOrders = (e) => {
     e.preventDefault();
-    const {
-      orderNumber,
-      dateOfOrder,
-      clientNumber,
-      taskDescription,
-      userAssignedDni,
-    } = orderData;
+    const order = {
+      ...orderData,
+      clientNumber: selectedClient,
+    };
+
+    console.log(order);
 
     if (
-      !orderNumber ||
-      !dateOfOrder ||
-      !clientNumber ||
-      !taskDescription ||
-      !userAssignedDni
+      !order.orderNumber ||
+      !order.dateOfOrder ||
+      !order.clientNumber ||
+      !order.taskDescription ||
+      !order.userAssignedDni
     ) {
       toast.error("Por favor, complete todos los campos.");
       return;
     }
 
-    mutation.mutate(orderData);
+    mutation.mutate(order);
   };
 
   return (
@@ -190,12 +190,141 @@ const Orders = () => {
             handlerCleanStates={handlerCleanForm}
             title={"Crear Nueva Orden"}
             size={"md"}
-            footerChild={
+          >
+            <form onSubmit={handleAddOrders} className="space-y-4 p-8 sm:p-10">
+              <div className="flex">
+                <div className="space-y-6 mr-4">
+                  {/* Order Number and Date */}
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 }}
+                      className="relative group w-[150px]"
+                    >
+                      <label className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400">
+                        Número de Orden
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <FaRegClipboard className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400" />
+                        </div>
+                        <input
+                          name="orderNumber"
+                          type="text"
+                          required
+                          className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                          placeholder="Ej: 01120824"
+                          onChange={updateOrderData}
+                        />
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="relative group"
+                    >
+                      <label className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400">
+                        Fecha de Orden
+                      </label>
+                      <div className="mt-1 relative rounded-md shadow-sm">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <FaRegCalendarAlt className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400" />
+                        </div>
+                        <input
+                          name="dateOfOrder"
+                          type="text"
+                          placeholder="dd/mm/yyyy"
+                          required
+                          className="block w-48 pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                          onChange={updateOrderData}
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Technician DNI */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="relative group"
+                  >
+                    <label className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400">
+                      DNI del Técnico
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <FaRegUserCircle className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400" />
+                      </div>
+                      <input
+                        name="userAssignedDni"
+                        type="text"
+                        required
+                        className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        placeholder="Ej: 12345678"
+                        onChange={updateOrderData}
+                      />
+                    </div>
+                  </motion.div>
+
+                  {/* Task Description */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="relative group"
+                  >
+                    <label className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400">
+                      Descripción del Servicio
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute top-3 left-3 flex items-center pointer-events-none">
+                        <FaRegFileAlt className="h-5 w-5 text-gray-500 transition-colors group-hover:text-red-400" />
+                      </div>
+                      <textarea
+                        name="taskDescription"
+                        rows="4"
+                        required
+                        className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                        placeholder="Describa el servicio a realizar..."
+                        onChange={updateOrderData}
+                      />
+                    </div>
+                  </motion.div>
+                </div>
+                {/* Client Search */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="relative group"
+                >
+                  <label className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400">
+                    Buscar Cliente
+                  </label>
+                  <SearchClients onClientSelect={setSelectedClient} />
+                  {selectedClient && (
+                    <div className="mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700">
+                      <p className="text-sm text-gray-300">
+                        Cliente seleccionado:{" "}
+                        {`${selectedClient.firstname} ${selectedClient.lastname}`}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        Dirección: {selectedClient.address} Telefono:{" "}
+                        {selectedClient.phone}
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              </div>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleAddOrders}
-                className="group relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+                className="relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg z-10"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <FaRegCheckCircle
@@ -205,9 +334,8 @@ const Orders = () => {
                 </span>
                 Crear Orden
               </motion.button>
-            }
-          >
-            <form onSubmit={handleAddOrders} className="space-y-2 p-8 sm:p-10">
+            </form>
+            {/* <form onSubmit={handleAddOrders} className="space-y-2 p-8 sm:p-10">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 {[
                   {
@@ -301,29 +429,7 @@ const Orders = () => {
                   ></textarea>
                 </div>
               </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="flex items-center"
-              >
-                <input
-                  id="coordinated"
-                  name="coordinated"
-                  type="checkbox"
-                  className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-700 rounded bg-gray-800"
-                  checked={orderData.coordinated}
-                  onChange={updateOrderData}
-                />
-                <label
-                  htmlFor="coordinated"
-                  className="ml-2 block text-sm text-gray-400 hover:text-red-400 transition-colors"
-                >
-                  Coordinado
-                </label>
-              </motion.div>
-            </form>
+            </form> */}
           </Modal>
         )}
       </section>

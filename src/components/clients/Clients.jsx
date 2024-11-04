@@ -20,6 +20,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
+import SearchClients from "../search/SearchClients";
 
 const Clients = () => {
   const [page, setPage] = useState(1);
@@ -174,6 +175,7 @@ const Clients = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
+            <SearchClients />
             <Table
               content={data}
               columns={columns}

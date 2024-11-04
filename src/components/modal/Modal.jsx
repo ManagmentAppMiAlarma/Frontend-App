@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 const customSizes = {
   sm: "md:w-[90vw] md:h-[90vh] lg:w-[30vw] lg:h-min max-h-screen lg:max-h-[90vh]",
   md: "md:w-[90vw] md:h-[90vh] lg:w-[50vw] lg:h-min max-h-screen lg:max-h-[90vh]",
-  lg: "md:w-[90vw] md:h-[90vh] lg:w-[70vw] lg:h-min max-h-screen lg:max-h-[90vh]",
+  lg: "md:w-[90vw] md:h-[90vh] lg:w-[100vw] lg:h-min max-h-screen lg:max-h-[90vh]",
 };
 export function Modal({
   open,
@@ -39,9 +39,6 @@ export function Modal({
       >
         <ModalHeader title={title} onClose={onClose} />
         <ModalBody>{children}</ModalBody>
-        <div className="flex justify-center">
-          {footerChild && <ModalFooter>{footerChild}</ModalFooter>}
-        </div>
       </div>
     </div>
   );
@@ -76,13 +73,5 @@ const ModalHeader = ({ onClose, title }) => {
 };
 
 const ModalBody = ({ children }) => {
-  return (
-    <section className="flex flex-col overflow-y-auto h-full">
-      {children}
-    </section>
-  );
-};
-
-const ModalFooter = ({ children }) => {
-  return <footer className="flex justify-end gap-2">{children}</footer>;
+  return <section className="flex flex-col">{children}</section>;
 };
