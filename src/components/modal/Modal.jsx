@@ -39,6 +39,7 @@ export function Modal({
       >
         <ModalHeader title={title} onClose={onClose} />
         <ModalBody>{children}</ModalBody>
+        <ModalFooter>{footerChild}</ModalFooter>
       </div>
     </div>
   );
@@ -74,4 +75,8 @@ const ModalHeader = ({ onClose, title }) => {
 
 const ModalBody = ({ children }) => {
   return <section className="flex flex-col">{children}</section>;
+};
+
+const ModalFooter = ({ children }) => {
+  return <footer className="flex justify-center gap-2">{children}</footer>;
 };

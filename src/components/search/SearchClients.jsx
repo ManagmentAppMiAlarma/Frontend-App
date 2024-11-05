@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { Global } from "../../helpers";
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const fetchClients = async (searchTerm) => {
   if (!searchTerm || searchTerm.length < 2) return [];
@@ -17,10 +18,11 @@ const fetchClients = async (searchTerm) => {
   return response.json();
 };
 
-const SearchClients = ({ onClientSelect }) => {
+const SearchClients = ({ onClientSelect, order }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const {
     data: clients,
@@ -46,10 +48,13 @@ const SearchClients = ({ onClientSelect }) => {
   };
 
   const handleSelectClient = (client) => {
-    console.log(client.clientNumber);
-    onClientSelect(client.clientNumber);
-    setSearchTerm(`${client.firstname} ${client.lastname}`);
-    setIsSearching(false);
+    if (order) {
+      onClientSelect(client);
+      setSearchTerm(`${client.firstname} ${client.lastname}`);
+      setIsSearching(false);
+    } else {
+      navigate(`/inicio/clientes/${client.clientNumber}`);
+    }
   };
 
   return (
@@ -78,24 +83,26 @@ const SearchClients = ({ onClientSelect }) => {
               Error: {error.message}
             </div>
           ) : clients && clients.length > 0 ? (
-            clients.map((client) => (
-              <div
-                key={client.id}
-                className="p-3 hover:bg-gray-700 cursor-pointer transition-colors duration-200"
-                onClick={() => handleSelectClient(client)}
-              >
-                <div className="font-medium text-white">
-                  {client.businessName ||
-                    `${client.firstname} ${client.lastname}`}
-                </div>
-                {client.businessName && (
-                  <div className="text-sm text-gray-400">
-                    {client.firstname} {client.lastname}
+            clients.map((client) => {
+              return (
+                <div
+                  key={client.id}
+                  className="p-3 hover:bg-gray-700 cursor-pointer transition-colors duration-200"
+                  onClick={() => handleSelectClient(client)}
+                >
+                  <div className="font-medium text-white">
+                    {client?.businessName ||
+                      `${client?.firstname} ${client?.lastname}`}
                   </div>
-                )}
-                <div className="text-sm text-gray-500">{client.address}</div>
-              </div>
-            ))
+                  {client?.businessName && (
+                    <div className="text-sm text-gray-400">
+                      {client?.firstname} {client?.lastname}
+                    </div>
+                  )}
+                  <div className="text-sm text-gray-500">{client?.address}</div>
+                </div>
+              );
+            })
           ) : (
             <div className="p-3 text-gray-400 text-center">
               No se encontraron resultados

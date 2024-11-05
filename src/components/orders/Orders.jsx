@@ -110,7 +110,7 @@ const Orders = () => {
     e.preventDefault();
     const order = {
       ...orderData,
-      clientNumber: selectedClient,
+      clientNumber: selectedClient?.clientNumber,
     };
 
     console.log(order);
@@ -190,6 +190,20 @@ const Orders = () => {
             handlerCleanStates={handlerCleanForm}
             title={"Crear Nueva Orden"}
             size={"md"}
+            footerChild={
+              <button
+                onClick={handleAddOrders}
+                className="group relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+              >
+                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <FaRegCheckCircle
+                    className="h-5 w-5 text-red-500 group-hover:text-red-400"
+                    aria-hidden="true"
+                  />
+                </span>
+                Crear Orden
+              </button>
+            }
           >
             <form onSubmit={handleAddOrders} className="space-y-4 p-8 sm:p-10">
               <div className="flex">
@@ -305,35 +319,24 @@ const Orders = () => {
                   <label className="block text-sm font-medium text-gray-400 mb-1 transition-colors group-hover:text-red-400">
                     Buscar Cliente
                   </label>
-                  <SearchClients onClientSelect={setSelectedClient} />
+                  <SearchClients
+                    onClientSelect={setSelectedClient}
+                    order={true}
+                  />
                   {selectedClient && (
                     <div className="mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700">
                       <p className="text-sm text-gray-300">
                         Cliente seleccionado:{" "}
-                        {`${selectedClient.firstname} ${selectedClient.lastname}`}
+                        {`${selectedClient?.firstname} ${selectedClient?.lastname}`}
                       </p>
                       <p className="text-xs text-gray-400">
-                        Dirección: {selectedClient.address} Telefono:{" "}
-                        {selectedClient.phone}
+                        Dirección: {selectedClient?.address} Telefono:{" "}
+                        {selectedClient?.phone}
                       </p>
                     </div>
                   )}
                 </motion.div>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleAddOrders}
-                className="relative min-w-96 flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg z-10"
-              >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <FaRegCheckCircle
-                    className="h-5 w-5 text-red-500 group-hover:text-red-400"
-                    aria-hidden="true"
-                  />
-                </span>
-                Crear Orden
-              </motion.button>
             </form>
             {/* <form onSubmit={handleAddOrders} className="space-y-2 p-8 sm:p-10">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
