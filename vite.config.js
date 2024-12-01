@@ -1,6 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
+import dotenv from "dotenv";
 import { VitePWA } from "vite-plugin-pwa";
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -40,7 +44,7 @@ export default defineConfig({
   ],
   server: {
     host: true,
-    port: 80,
+    port: process.env.VITE_PORT ? parseInt(process.env.VITE_PORT) : 80,
     watch: {
       usePolling: true,
     },
